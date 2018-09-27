@@ -46,26 +46,23 @@
           <input class="btn btn-info" type="submit" value="Брэнд" id="brand">
 
         <div class="col"></div>
-
-            <form>
+            
               <div class="form-row align-items-center">
                 <div class="col-sm-3 my-0">
                   <label class="sr-only" for="inlineFormInput">Price min</label>
-                  <input type="text" class="form-control mb-0" id="Price min" placeholder="Price min" >
+                  <input type="text" class="form-control mb-0" id="Price_min" placeholder="Price min" >
                 </div>
                 <div class="col-sm-3 my-0">
                   <label class="sr-only" for="inlineFormInputGroup">Price max</label>
                   <div class="input-group mb-0">
-                     <input type="text" class="form-control" id="Price max" placeholder="Price max" >
+                     <input type="text" class="form-control" id="Price_max" placeholder="Price max" >
                   </div>
                 </div>
                
                 <div class="col-auto">
-                  <button type="submit" class="btn btn-info mb-0" id="submit_price">Submit</button>
+                  <button type="submit" class="btn btn-info mb-0" id="submit_price">OFF</button>
                 </div>
-              </div>
-            </form>
-        
+              </div>      
       
       <div class="col"></div>
     </div>
@@ -91,33 +88,37 @@
         <div class="col"></div>
         <div class="col">
             {% for bike in bikes_1  %}
-              <button type="button" class="btn btn-light"  type="submit" value="Submit">
-                  <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="165">    
-                  <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
-                  <p class="text-center">   <div class="col">  Price - {{ bike.price }}  ₽ </div>    </p>   
-                  {% if bike.available %}
-                      <p class="text-center">   <div class="col">   </div>    </p>  
-                  {% else %}
-                      <p class="text-center">   <div class="col">  Нет в наличии </div>    </p>
-                  {%endif%}   
-                  <p class="text-center">   <div class="col">   </div>    </p>    
-              </button>
+              <a href="{% url 'bike:main_page' %}"> 
+                <button type="button" class="btn btn-light"  type="submit" value="Submit">
+                    <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="165">    
+                    <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
+                    <p class="text-center">   <div class="col">  Price - {{ bike.price }}  ₽ </div>    </p>   
+                    {% if bike.available %}
+                        <p class="text-center">   <div class="col">   </div>    </p>  
+                    {% else %}
+                        <p class="text-center">   <div class="col">  Нет в наличии </div>    </p>
+                    {%endif%}   
+                    <p class="text-center">   <div class="col">   </div>    </p>    
+                </button>
+              </a>
             {% endfor %}
         </div>
         <div class="col"></div>
         <div class="col">
             {% for bike in bikes_2  %}
-              <button type="button" class="btn btn-light"  type="submit" value="Submit">
-                  <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
-                  <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
-                  <p class="text-center">   <div class="col">  Price - {{ bike.price }} ₽ </div>    </p>   
-                  {% if bike.available %}
-                      <p class="text-center">   <div class="col">   </div>    </p>  
-                  {% else %}
-                      <p class="text-center">   <div class="col">  Нет в наличии </div>    </p>
-                  {%endif%}   
-                  <p class="text-center">   <div class="col">   </div>    </p>   
-              </button>
+              <a href="{% url 'bike:main_page' %}"> 
+                <button type="button" class="btn btn-light"  type="submit" value="Submit">
+                    <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
+                    <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
+                    <p class="text-center">   <div class="col">  Price - {{ bike.price }} ₽ </div>    </p>   
+                    {% if bike.available %}
+                        <p class="text-center">   <div class="col">   </div>    </p>  
+                    {% else %}
+                        <p class="text-center">   <div class="col">  Нет в наличии </div>    </p>
+                    {%endif%}   
+                    <p class="text-center">   <div class="col">   </div>    </p>   
+                </button>
+              </a>
             {% endfor %}
 
             {% if table_column %}
@@ -138,7 +139,7 @@
 <script type="application/javascript">
     (function (window, document, $) {
 
-        filter = {'available':null, 'price':null, 'brand':null, 'size':null, 'pricemin':null, 'pricemax':null }
+        filter = {'available':'', 'price':'', 'brand':'', 'size':'', 'pricemin':'', 'pricemax':'' }
 
         {% if available1  %}
          filter.available = "{{ available1 }}"        
@@ -152,12 +153,12 @@
         {% if size1  %}
          filter.size = "{{ size1 }}"
         {% endif %}
-        {% if size1  %}
-        //  filter.pricemin = "{{ pricemin }}"
-        // {% endif %}
-        // {% if size1  %}
-        //  filter.pricemax = "{{ pricemax }}"
-        // {% endif %}
+        {% if pricemin  %}
+         filter.pricemin = "{{ pricemin }}"
+        {% endif %}
+        {% if pricemax  %}
+         filter.pricemax = "{{ pricemax }}"
+        {% endif %}
 
 
         if (filter.available == 'true') {
@@ -165,12 +166,12 @@
             button.className = "btn btn-success"
         }
 
-        if (filter.price == 'true') {
+        if (filter.price == 'low') {
             var button = document.getElementById('price')
             button.className = "btn btn-success"
         }
     
-        if (filter.price == 'false') {
+        if (filter.price == 'high') {
             var button = document.getElementById('price')
             button.className = "btn btn-danger"
         }
@@ -208,12 +209,36 @@
             var button = document.getElementById('size')
             button.className = "btn btn-success dropdown-toggle"
             button.innerHTML =  "XL"  
-        }          
+        }
+
+         if (filter.pricemin != '' && filter.pricemax != '' && filter.pricemax != 'None' && filter.pricemin != 'None')  {
+            console.log('11')
+            var button2 = document.getElementById('submit_price')
+            button2.className = "btn btn-success mb-0"
+            button2.innerHTML =  "ON"
+            var button_min = document.getElementById('Price_min')
+            var button_max = document.getElementById('Price_max')
+            button_min.placeholder = filter.pricemin
+            button_max.placeholder = filter.pricemax
+        }
+ 
+
+         
       
         function sendRequest() { 
-          param = "?available=" + filter.available + "&price=" + filter.price + "&brand=" + filter.brand + "&size=" + filter.size
-          param = param + "&pricemin=" + filter.pricemin + "&pricemax=" + filter.pricemax   
+
+          var a =''
+          for (var key in filter) {
+            if (filter[key] && filter[key] != ' ' ){
+              a = a + '&' + key +'='+ filter[key]
+            }
+          }
           
+          param = '?' + a
+          if (param == '?'){
+            param = ''
+          }
+
           new_link = 'http://127.0.0.1:8000/bike/mountbike/'+ param
             var request = $.ajax({
                 type:'get',
@@ -238,7 +263,7 @@
                     window.location.href = new_link
                 } else {
                   control.className = "btn btn-info";
-                  filter['available'] = null
+                  filter['available'] = ''
                   sendRequest()                  
                   window.location.href = new_link
                 }
@@ -251,18 +276,18 @@
             var control = document.getElementById('price');
             control.addEventListener('click', function (event) {
                 if (control.className == "btn btn-info") {
-                    filter['price'] = true
+                    filter['price'] = 'low'
                     sendRequest()
                     window.location.href = new_link
                 }
                 else if (control.className == "btn btn-success") {
-                    filter['price'] = false
+                    filter['price'] = 'high'
                     sendRequest()
                     window.location.href = new_link
                 }
                 else {
                   control.className = "btn btn-info";
-                  filter['price'] = null
+                  filter['price'] = ''
                   sendRequest()
                   window.location.href = new_link
                 }
@@ -279,7 +304,7 @@
                     window.location.href = new_link
                 } else {
                   control.className = "btn btn-info";
-                  filter['brand'] = null
+                  filter['brand'] = ''
                   sendRequest()
                   window.location.href = new_link
                 }
@@ -338,7 +363,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var control = document.getElementById('size_all');
             control.addEventListener('click', function (event) {
-                    filter['size'] = null
+                    filter['size'] = ''
                     sendRequest()
                     window.location.href = new_link
             })
@@ -349,22 +374,16 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             var control = document.getElementById('submit_price');
-            var price_min = document.getElementById('Price min');
-            var price_max = document.getElementById('Price max');
-            control.addEventListener('click', function (event) {
-                    console.log('Submit')
-                    var my_min = 1
-                    var my_max = price_max.value
-                    filter['pricemin'] = my_min
-                    filter['pricemax'] = my_max
+            var price_min = document.getElementById('Price_min');
+            var price_max = document.getElementById('Price_max');
+            control.addEventListener('click', function (event) {                    
+                    filter['pricemin'] = price_min.value
+                    filter['pricemax'] = price_max.value             
                     sendRequest()
                     window.location.href = new_link
             })
         })
 
-
-console.log(filter.pricemin)
-console.log(filter.available)
     })(window, document, jQuery);
 </script>
 

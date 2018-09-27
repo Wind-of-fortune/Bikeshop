@@ -106,3 +106,4 @@ def price_min_max(querylist, price_min, price_max):
         if price_min <= i.price <= price_max:
             bikes.append(i)
     return bikes
+

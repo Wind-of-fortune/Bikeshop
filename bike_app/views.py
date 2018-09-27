@@ -18,7 +18,6 @@ def mountbike(request):
     brand = request.GET.get('brand')
     price_min = request.GET.get('pricemin')
     price_max = request.GET.get('pricemax')
-    print('PRAICE_MIN IS -----', price_min)
 
     if available == 'true':
         old_bikes = bikes
@@ -28,10 +27,10 @@ def mountbike(request):
             if i.available == True:
                 bikes.append(i)
 
-    if price == 'true':
+    if price == 'low':
         bikes = price_low_filter(bikes)
 
-    if price == 'false':
+    if price == 'high':
         bikes = price_high_filter(bikes)
 
     if brand == 'true':
@@ -40,9 +39,8 @@ def mountbike(request):
     if size == 'xs' or size == 's' or size == 'm' or size == 'l' or size == 'xl':
         bikes = size_filter(size)
 
-    if price_min != 'null' or price_min != None and price_max != 'null' or price_max != None:
+    if price_min != '' or price_min != None and price_max != '' or price_max != None:
         try:
-            print('TYPE OF  ------', type(price_min), type(price_max))
             price_min = int(price_min)
             price_max = int(price_max)
             bikes = price_min_max(bikes, price_min, price_max)
@@ -60,6 +58,8 @@ def mountbike(request):
                                                             'price1': price,
                                                             'size1': size,
                                                             'brand1': brand,
+                                                            'pricemin': price_min,
+                                                            'pricemax': price_max,
                                                             })
 
 #
