@@ -1,0 +1,373 @@
+{% extends 'bike_app/_base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="p-2 mb-0 bg-light text-dark">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col">
+          <p class="text-center">  Сортировать по:   </p>  
+      </div>
+      <div class="col"></div>
+    </div>
+</div>
+
+
+<div class="p-0 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col"></div>
+
+             
+            <input class="btn btn-info" type="submit" value="В наличии" id="available"> 
+ 
+
+        <div class="dropdown">
+          <button class="btn btn-info dropdown-toggle" type="button" id="size" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Размер рамы
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item"  id="size_xs">XS</a>
+            <a class="dropdown-item"  id="size_s">S</a>
+            <a class="dropdown-item"  id="size_m">M</a>
+            <a class="dropdown-item"  id="size_l">L</a>
+            <a class="dropdown-item"  id="size_xl">XL</a>
+            <a class="dropdown-item"  id="size_all">ALL</a>
+          </div>
+        </div>
+
+         
+          <input class="btn btn-info" type="submit" value="Цена" id="price">
+      
+          
+          <input class="btn btn-info" type="submit" value="Брэнд" id="brand">
+
+        <div class="col"></div>
+
+            <form>
+              <div class="form-row align-items-center">
+                <div class="col-sm-3 my-0">
+                  <label class="sr-only" for="inlineFormInput">Price min</label>
+                  <input type="text" class="form-control mb-0" id="Price min" placeholder="Price min" >
+                </div>
+                <div class="col-sm-3 my-0">
+                  <label class="sr-only" for="inlineFormInputGroup">Price max</label>
+                  <div class="input-group mb-0">
+                     <input type="text" class="form-control" id="Price max" placeholder="Price max" >
+                  </div>
+                </div>
+               
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-info mb-0" id="submit_price">Submit</button>
+                </div>
+              </div>
+            </form>
+        
+      
+      <div class="col"></div>
+    </div>
+</div>
+
+
+
+<div class="p-2 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col">
+          <p class="text-center"> <img width="50">  </p>
+      </div>
+      <div class="col"></div>
+    </div>
+</div>
+
+
+
+  <div class="p-1 mb-0 bg-light text-white" id='my_block'>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col">
+            {% for bike in bikes_1  %}
+              <button type="button" class="btn btn-light"  type="submit" value="Submit">
+                  <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="165">    
+                  <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
+                  <p class="text-center">   <div class="col">  Price - {{ bike.price }}  ₽ </div>    </p>   
+                  {% if bike.available %}
+                      <p class="text-center">   <div class="col">   </div>    </p>  
+                  {% else %}
+                      <p class="text-center">   <div class="col">  Нет в наличии </div>    </p>
+                  {%endif%}   
+                  <p class="text-center">   <div class="col">   </div>    </p>    
+              </button>
+            {% endfor %}
+        </div>
+        <div class="col"></div>
+        <div class="col">
+            {% for bike in bikes_2  %}
+              <button type="button" class="btn btn-light"  type="submit" value="Submit">
+                  <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
+                  <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
+                  <p class="text-center">   <div class="col">  Price - {{ bike.price }} ₽ </div>    </p>   
+                  {% if bike.available %}
+                      <p class="text-center">   <div class="col">   </div>    </p>  
+                  {% else %}
+                      <p class="text-center">   <div class="col">  Нет в наличии </div>    </p>
+                  {%endif%}   
+                  <p class="text-center">   <div class="col">   </div>    </p>   
+              </button>
+            {% endfor %}
+
+            {% if table_column %}
+                  <img  width="0">                      
+                  
+            {% endif %}
+
+        </div>
+        <div class="col"></div>
+        <div class="col"></div>
+      </div>
+  </div>
+     
+
+<script type="application/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
+
+
+<script type="application/javascript">
+    (function (window, document, $) {
+
+        filter = {'available':null, 'price':null, 'brand':null, 'size':null, 'pricemin':null, 'pricemax':null }
+
+        {% if available1  %}
+         filter.available = "{{ available1 }}"        
+        {% endif %}
+        {% if price1  %}
+         filter.price = "{{ price1 }}"
+        {% endif %}
+        {% if brand1  %}
+         filter.brand = "{{ brand1 }}"
+        {% endif %}
+        {% if size1  %}
+         filter.size = "{{ size1 }}"
+        {% endif %}
+        {% if size1  %}
+        //  filter.pricemin = "{{ pricemin }}"
+        // {% endif %}
+        // {% if size1  %}
+        //  filter.pricemax = "{{ pricemax }}"
+        // {% endif %}
+
+
+        if (filter.available == 'true') {
+            var button = document.getElementById('available')
+            button.className = "btn btn-success"
+        }
+
+        if (filter.price == 'true') {
+            var button = document.getElementById('price')
+            button.className = "btn btn-success"
+        }
+    
+        if (filter.price == 'false') {
+            var button = document.getElementById('price')
+            button.className = "btn btn-danger"
+        }
+
+        if (filter.brand == 'true') {
+            var button = document.getElementById('brand')
+            button.className = "btn btn-success"
+        }
+
+        if (filter.size == 'xs') {
+            var button = document.getElementById('size')
+            button.className = "btn btn-success dropdown-toggle"
+            button.innerHTML = '     XS    '
+        }
+      
+        if (filter.size == 's') {
+              var button = document.getElementById('size')
+              button.className = "btn btn-success dropdown-toggle"
+              button.innerHTML = '     S    '
+          }
+
+        if (filter.size == 'm') {
+            var button = document.getElementById('size')
+            button.className = "btn btn-success dropdown-toggle"
+            button.innerHTML = '     M    '
+        }
+
+        if (filter.size == 'l') {
+            var button = document.getElementById('size')
+            button.className = "btn btn-success dropdown-toggle"
+            button.innerHTML = '     L    '
+        }
+
+        if (filter.size == 'xl') {
+            var button = document.getElementById('size')
+            button.className = "btn btn-success dropdown-toggle"
+            button.innerHTML =  "XL"  
+        }          
+      
+        function sendRequest() { 
+          param = "?available=" + filter.available + "&price=" + filter.price + "&brand=" + filter.brand + "&size=" + filter.size
+          param = param + "&pricemin=" + filter.pricemin + "&pricemax=" + filter.pricemax   
+          
+          new_link = 'http://127.0.0.1:8000/bike/mountbike/'+ param
+            var request = $.ajax({
+                type:'get',
+                url: new_link,
+                crossDomain: true,
+                data: filter, 
+            });
+
+            request.done(function (data) {
+                var result = filter;
+            })
+        }
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementById('available');
+            control.addEventListener('click', function (event) {
+                if (control.className == "btn btn-info") {
+                    filter['available'] = true
+                    sendRequest()
+                    window.location.href = new_link
+                } else {
+                  control.className = "btn btn-info";
+                  filter['available'] = null
+                  sendRequest()                  
+                  window.location.href = new_link
+                }
+            })
+        })
+  
+
+
+     document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementById('price');
+            control.addEventListener('click', function (event) {
+                if (control.className == "btn btn-info") {
+                    filter['price'] = true
+                    sendRequest()
+                    window.location.href = new_link
+                }
+                else if (control.className == "btn btn-success") {
+                    filter['price'] = false
+                    sendRequest()
+                    window.location.href = new_link
+                }
+                else {
+                  control.className = "btn btn-info";
+                  filter['price'] = null
+                  sendRequest()
+                  window.location.href = new_link
+                }
+            })
+        })
+ 
+
+     document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementById('brand');
+            control.addEventListener('click', function (event) {
+                if (control.className == "btn btn-info") {
+                    filter['brand'] = true
+                    sendRequest()
+                    window.location.href = new_link
+                } else {
+                  control.className = "btn btn-info";
+                  filter['brand'] = null
+                  sendRequest()
+                  window.location.href = new_link
+                }
+            })
+        })
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementById('size_xs');
+            control.addEventListener('click', function (event) {
+                    filter['size'] = 'xs'
+                    sendRequest()
+                    window.location.href = new_link
+            })
+        })
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementById('size_s');
+            control.addEventListener('click', function (event) {
+                    filter['size'] = 's'
+                    sendRequest()
+                    window.location.href = new_link
+            })
+        })
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementById('size_m');
+            control.addEventListener('click', function (event) {
+                    filter['size'] = 'm'
+                    sendRequest()
+                    window.location.href = new_link
+            })
+        })
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementById('size_l');
+            control.addEventListener('click', function (event) {
+                    filter['size'] = 'l'
+                    sendRequest()
+                    window.location.href = new_link
+            })
+        })
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementById('size_xl');
+            control.addEventListener('click', function (event) {
+                    filter['size'] = 'xl'
+                    sendRequest()
+                    window.location.href = new_link
+            })
+        })
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementById('size_all');
+            control.addEventListener('click', function (event) {
+                    filter['size'] = null
+                    sendRequest()
+                    window.location.href = new_link
+            })
+        })
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementById('submit_price');
+            var price_min = document.getElementById('Price min');
+            var price_max = document.getElementById('Price max');
+            control.addEventListener('click', function (event) {
+                    console.log('Submit')
+                    var my_min = 1
+                    var my_max = price_max.value
+                    filter['pricemin'] = my_min
+                    filter['pricemax'] = my_max
+                    sendRequest()
+                    window.location.href = new_link
+            })
+        })
+
+
+console.log(filter.pricemin)
+console.log(filter.available)
+    })(window, document, jQuery);
+</script>
+
+{% endblock %}
+
+
