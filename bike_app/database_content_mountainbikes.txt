@@ -1,0 +1,72 @@
+a = MountBikes(name="argus comp 2018", brand="Mongoose", year=2018, price=51600, date=timezone.now(), img_link="argus comp 2018.jpg", size='XS, MM, LL')
+
+b = MountBikes(name="zaskar comp 2018", brand="GT", year=2018, price=63200, date=timezone.now(), img_link="zaskar comp 2018.jpg", size='MM, XL')
+
+c = MountBikes(name="zaskar elite 2018", brand="GT", year=2018, price=79100, date=timezone.now(), img_link="zaskar elite 2018.jpg", size='LL')
+
+d = MountBikes(name="x-vert motion 2017", brand="Corratec", year=2017, price=34000, date=timezone.now(), img_link="x-vert motion 2017.jpg", size='SS')
+
+e = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, price=65500, date=timezone.now(), img_link="x-vert expert 2018.jpg", size='SS, MM, LL, XL')
+
+f = MountBikes(name="dragon pro 2016", brand="Jamis", year=2016, price=94000, date=timezone.now(), img_link="dragon pro 2016.jpg", size='MM, XL')
+
+g = MountBikes(name="eden race 2016", brand="Jamis", year=2016, price=104000, date=timezone.now(), img_link="eden race 2016.jpg", size='XS')
+
+a.save()
+b.save()
+c.save()
+d.save()
+e.save()
+f.save()
+g.save()
+
+
+
+
+a1 = MountBikesDescription(mountbikes=a, description="Это просто замечательный байк,он катит", frame="aluminium", fork="RockShox Tora TK, 100мм", crank="Shimano Deore", wheels="Shimano Deore wheelset", front_shifter="Shimano Deore 2x10", rear_shifter="Shimano Deore", front_brake="Shimano Deore", rear_brake="Shimano Deore", handlebar="WTB 660мм", seat = "WTB Silverado")
+b1 = MountBikesDescription(mountbikes=b, description="Это просто замечательный байк,он катит", frame="aluminium", fork="RockShox 30 TK, 100мм", crank="Shimano Deore", wheels="Shimano Deore wheelset", front_shifter="Shimano Deore 2x10", rear_shifter="Shimano Deore", front_brake="Shimano Deore", rear_brake="Shimano Deore", handlebar="WTB 660мм", seat = "WTB Silverado")
+c1 = MountBikesDescription(mountbikes=c, description="Это просто замечательный байк,он катит", frame="aluminium", fork="RockShox Recon Gold, 100мм", crank="Shimano XT", wheels="Shimano Deore wheelset", front_shifter="Shimano Deore 2x10", rear_shifter="Shimano SLX", front_brake="formula RX", rear_brake="formula RX", handlebar="WTB 660мм", seat = "WTB Silverado")
+d1 = MountBikesDescription(mountbikes=d, description="Этот так себе но,он катит", frame="aluminium", fork="ZOOM, 100мм", crank="Shimano alivio", wheels="Shimano Deore wheelset", front_shifter="Shimano alivio 3x10", rear_shifter="Shimano Deore", front_brake="Shimano alivio", rear_brake="Shimano alivio", handlebar="WTB 600мм", seat = "WTB Silverado")
+e1 = MountBikesDescription(mountbikes=e, description="Это просто замечательный байк,он катит", frame="aluminium", fork="RockShox 30 TK, 100мм", crank="Shimano Deore", wheels="Shimano Deore wheelset", front_shifter="Shimano Deore 2x10", rear_shifter="Shimano Deore", front_brake="Shimano Deore", rear_brake="Shimano Deore", handlebar="WTB 660мм", seat = "WTB Silverado")
+f1 = MountBikesDescription(mountbikes=f, description="Это просто замечательный байк,он катит", frame="steel", fork="Fox cashima, 120мм", crank="Shimano XT", wheels="Mavic crossride wheelset", front_shifter="Shimano XT 2x10", rear_shifter="Shimano XT", front_brake="Shimano XT", rear_brake="Shimano XT", handlebar="WTB 660мм", seat = "WTB Silverado")
+g1 = MountBikesDescription(mountbikes=g, description="Это просто замечательный байк,он катит", frame="aluminium", fork="RockShox SID, 100мм", crank="SRAM XX", wheels="Mavic crossride wheelset", front_shifter="Shimano XT 2x10", rear_shifter="Shimano XT", front_brake="Shimano XT", rear_brake="Shimano XT", handlebar="WTB 660мм", seat = "WTB Silverado")
+
+a1.save()
+b1.save()
+c1.save()
+d1.save()
+e1.save()
+f1.save()
+g1.save()
+
+
+
+from django.utils import timezone
+from bike_app.models import *
+
+
+
+
+
+
+
+
+
+
+
+
+
+a = MountBikes(name="argus comp 2018", brand="Mongoose", year=2018, price=51600, date=timezone.now(), img_link="argus comp 2018.jpg", size='XS')
+b = MountBikes(name="argus comp 2018", brand="Mongoose", year=2018, price=51600, date=timezone.now(), img_link="argus comp 2018.jpg", size='M')
+c = MountBikes(name="argus comp 2018", brand="Mongoose", year=2018, price=51600, date=timezone.now(), img_link="argus comp 2018.jpg", size='L')
+d = MountBikes(name="zaskar comp 2018", brand="GT", year=2018, price=63200, date=timezone.now(), img_link="zaskar comp 2018.jpg", size='M')
+e = MountBikes(name="zaskar comp 2018", brand="GT", year=2018, price=63200, date=timezone.now(), img_link="zaskar comp 2018.jpg", size='XL')
+f = MountBikes(name="zaskar elite 2018", brand="GT", year=2018, price=79100, date=timezone.now(), img_link="zaskar elite 2018.jpg", size='L')
+g = MountBikes(name="x-vert motion 2017", brand="Corratec", year=2017, price=34000, date=timezone.now(), img_link="x-vert motion 2017.jpg", size='S')
+h = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, price=65500, date=timezone.now(), img_link="x-vert expert 2018.jpg", size='S')
+i = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, price=65500, date=timezone.now(), img_link="x-vert expert 2018.jpg", size='M')
+j = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, price=65500, date=timezone.now(), img_link="x-vert expert 2018.jpg", size='L')
+k = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, price=65500, date=timezone.now(), img_link="x-vert expert 2018.jpg", size='XL')
+l = MountBikes(name="dragon pro 2016", brand="Jamis", year=2016, price=94000, date=timezone.now(), img_link="dragon pro 2016.jpg", size='M')
+m = MountBikes(name="dragon pro 2016", brand="Jamis", year=2016, price=94000, date=timezone.now(), img_link="dragon pro 2016.jpg", size='XL')
+n = MountBikes(name="eden race 2016", brand="Jamis", year=2016, price=104000, date=timezone.now(), img_link="eden race 2016.jpg", size='XS')

@@ -88,9 +88,8 @@
         <div class="col"></div>
         <div class="col">
             {% for bike in bikes_1  %}
-              <a href="{% url 'bike:main_page' %}"> 
-                <button type="button" class="btn btn-light"  type="submit" value="Submit">
-                    <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="165">    
+                <button type="button" class="btn btn-light"  type="submit" value="Submit" id="{{ bike.name }}">
+                    <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200">    
                     <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
                     <p class="text-center">   <div class="col">  Price - {{ bike.price }}  ₽ </div>    </p>   
                     {% if bike.available %}
@@ -100,14 +99,12 @@
                     {%endif%}   
                     <p class="text-center">   <div class="col">   </div>    </p>    
                 </button>
-              </a>
             {% endfor %}
         </div>
         <div class="col"></div>
         <div class="col">
             {% for bike in bikes_2  %}
-              <a href="{% url 'bike:main_page' %}"> 
-                <button type="button" class="btn btn-light"  type="submit" value="Submit">
+                <button type="button" class="btn btn-light"  type="submit" value="Submit" id="{{ bike.name }}">
                     <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
                     <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
                     <p class="text-center">   <div class="col">  Price - {{ bike.price }} ₽ </div>    </p>   
@@ -118,7 +115,6 @@
                     {%endif%}   
                     <p class="text-center">   <div class="col">   </div>    </p>   
                 </button>
-              </a>
             {% endfor %}
 
             {% if table_column %}
@@ -140,7 +136,7 @@
     (function (window, document, $) {
 
         filter = {'available':'', 'price':'', 'brand':'', 'size':'', 'pricemin':'', 'pricemax':'' }
-
+        
         {% if available1  %}
          filter.available = "{{ available1 }}"        
         {% endif %}
@@ -187,19 +183,19 @@
             button.innerHTML = '     XS    '
         }
       
-        if (filter.size == 's') {
+        if (filter.size == 'ss') {
               var button = document.getElementById('size')
               button.className = "btn btn-success dropdown-toggle"
               button.innerHTML = '     S    '
           }
 
-        if (filter.size == 'm') {
+        if (filter.size == 'mm') {
             var button = document.getElementById('size')
             button.className = "btn btn-success dropdown-toggle"
             button.innerHTML = '     M    '
         }
 
-        if (filter.size == 'l') {
+        if (filter.size == 'll') {
             var button = document.getElementById('size')
             button.className = "btn btn-success dropdown-toggle"
             button.innerHTML = '     L    '
@@ -223,7 +219,7 @@
         }
  
 
-         
+        
       
         function sendRequest() { 
 
@@ -240,6 +236,7 @@
           }
 
           new_link = 'http://127.0.0.1:8000/bike/mountbike/'+ param
+
             var request = $.ajax({
                 type:'get',
                 url: new_link,
@@ -251,7 +248,6 @@
                 var result = filter;
             })
         }
-
 
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -325,7 +321,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var control = document.getElementById('size_s');
             control.addEventListener('click', function (event) {
-                    filter['size'] = 's'
+                    filter['size'] = 'ss'
                     sendRequest()
                     window.location.href = new_link
             })
@@ -334,7 +330,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var control = document.getElementById('size_m');
             control.addEventListener('click', function (event) {
-                    filter['size'] = 'm'
+                    filter['size'] = 'mm'
                     sendRequest()
                     window.location.href = new_link
             })
@@ -344,7 +340,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var control = document.getElementById('size_l');
             control.addEventListener('click', function (event) {
-                    filter['size'] = 'l'
+                    filter['size'] = 'll'
                     sendRequest()
                     window.location.href = new_link
             })
@@ -371,7 +367,6 @@
 
 
 
-
         document.addEventListener('DOMContentLoaded', function () {
             var control = document.getElementById('submit_price');
             var price_min = document.getElementById('Price_min');
@@ -384,6 +379,58 @@
             })
         })
 
+
+        
+          function loadNewPage(bike_name) {
+            //var previous_page = {'bike_name': bike_name, 'previous_page': window.location.href} 
+            var my_url = 'http://127.0.0.1:8000/bike/mountbike/name' + '?' + bike_name
+
+            // var request = $.ajax({
+            //     type:'get',
+            //     url: my_url,
+            //     crossDomain: true,
+            //     data: previous_page,
+            //     success: function(){  
+            //     console.log('success')
+            //   }
+            // });
+            
+            // request.done(function (data) {
+            //     window.location.href = my_url;
+            // })
+            
+
+        }
+
+
+        var elems = document.querySelectorAll('button');
+
+        for (var i = 0; i < elems.length; i++) {
+          elems[i].addEventListener("click",function (event) {          
+           //loadNewPage(event.currentTarget.id)
+        
+           
+           var counter = 0
+           var str_link = ''
+           for (var key in filter){
+            if (filter[key] == ''){
+              counter = counter + 1
+            } else{
+              str_link =str_link + '&'+ key + '=' + filter[key]
+            }
+           }
+           
+           str_link = '?' + str_link
+
+
+           if (str_link == ''){
+              window.location.href = 'http://127.0.0.1:8000/bike/mountbike/name/' + '?' + '*' + event.currentTarget.id;
+           } else{
+              window.location.href = 'http://127.0.0.1:8000/bike/mountbike/name/' + str_link + '*' + event.currentTarget.id;
+           }
+     
+            })
+        }
     })(window, document, jQuery);
 </script>
 

@@ -1,20 +1,4 @@
 from bike_app.models import MountBikes
-import re
-
-def bike_sort_by_repeats(querylist):
-    a = list(querylist)
-    bikes_set = []
-    bikes = []
-
-    for i in a:  # создаем новый лист без повторяющихся имен
-        bikes_set.append(str(i))
-    bikes_set = set(bikes_set)
-
-    new_dict = dict(zip(bikes_set, querylist))
-
-    for k in sorted(new_dict.keys()):
-        bikes.append(new_dict[k])
-    return bikes
 
 
 def check_1_or_0(querylist):
@@ -92,9 +76,8 @@ def brand_filter(querylist):
 def size_filter(size):
     querylist = MountBikes.objects.all()
     bikes = []
-    print('QUERY  - ', querylist)
     for i in querylist:
-        if i.size == str(size.upper()):
+        if i.size.find(str(size.upper())) != -1:
             bikes.append(i)
     print('SIZE  - ', bikes)
     return bikes
@@ -106,4 +89,22 @@ def price_min_max(querylist, price_min, price_max):
         if price_min <= i.price <= price_max:
             bikes.append(i)
     return bikes
+
+
+# Функция - костыль для парсинга url и взятия из него нужных параметров
+def get_bike_name_and_last_page_url(mountbike_path, mountbike_uri):
+
+    bike_name = mountbike_path.replace('/bike/mountbike/name/?', '')
+    bike_string = bike_name.split('*')
+    bike_name = bike_string[1]
+    bike_name = bike_name.replace('%20', ' ')
+
+    mountbike_name = mountbike_uri.split('*')
+    mountbike_name = mountbike_name[0]
+    a = mountbike_name.split('name/')
+    b = a[0]
+    c = a[1]
+    mountbike_uri = b + c
+
+    return bike_name, mountbike_uri
 
