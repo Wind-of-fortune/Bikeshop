@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #my_apps
     'bike_app',
+    'auth_app',
 ]
 
 MIDDLEWARE = [
@@ -107,10 +108,22 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Authorization
+# https://docs.djangoproject.com/es/2.0/topics/auth/
+
+AUTH_USER_MODEL = 'auth_app.CustomUser'
+LOGIN_URL = 'auth/login'
+LOGIN_REDIRECT_URL = 'bike/'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 

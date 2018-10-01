@@ -79,7 +79,6 @@ def size_filter(size):
     for i in querylist:
         if i.size.find(str(size.upper())) != -1:
             bikes.append(i)
-    print('SIZE  - ', bikes)
     return bikes
 
 

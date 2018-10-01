@@ -1,0 +1,21 @@
+{% extends 'bike_app/_base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<h1 class="bg-light">Register, please!</h1>
+
+<form action="{% url 'auth_app:register' %}" method="POST">
+	 <p class="bg-light"> 
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+     </p>
+</form>
+
+
+
+{% endblock %}
+

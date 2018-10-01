@@ -2,7 +2,6 @@
 from django.db import models
 from django.utils import timezone
 
-
 class Bikes(models.Model):
     name = models.CharField(max_length=100, unique=True)
     brand = models.CharField(max_length=50)

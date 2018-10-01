@@ -18,9 +18,11 @@ from django.urls import path
 from django.urls import include
 
 from bike_app import urls as bike_urls
+from auth_app import urls as auth_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('bike/', include((bike_urls, 'bike_app'),namespace='bike')),
+    path('bike/', include((bike_urls, 'bike_app'), namespace='bike')),
+    path('auth/', include((auth_urls, 'auth_app'),namespace='auth_app')),
 ]
 

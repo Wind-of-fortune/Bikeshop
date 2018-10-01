@@ -51,3 +51,11 @@ def mountbike_model(request):
 
     return HttpResponse('Something goes wrong')
 
+
+
+
+
+
+
+
+
