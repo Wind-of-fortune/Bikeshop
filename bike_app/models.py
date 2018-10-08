@@ -2,35 +2,48 @@
 from django.db import models
 from django.utils import timezone
 
-class Bikes(models.Model):
+
+class MountBikes(models.Model):
     name = models.CharField(max_length=100, unique=True)
     brand = models.CharField(max_length=50)
     year = models.PositiveSmallIntegerField()
-    price = models.IntegerField()
-    date = models.DateTimeField(default=timezone.now)
+    fake_price = models.PositiveIntegerField()
+    discount = models.PositiveSmallIntegerField(default=0)
+    price = models.PositiveIntegerField(default=fake_price)
     img_link = models.CharField(max_length=150)
-    available = models.BooleanField(default=True)
-    size = models.CharField(max_length=30)
+
+    mount_bike = ('mountain_bike', 'mountain_bike')
+    road_bike = ('road_bike', 'road_bike')
+    city_bike = ('city_bike', 'city_bike')
+    bmx_bike = ('BMX_bike', 'BMX_bike')
+    child_bike = ('child_bike', 'child_bike')
+    __all = dict([mount_bike, road_bike, city_bike, bmx_bike, child_bike])
+    bike_type = models.CharField(max_length=20, choices=__all.items())
+
+    available_XS = models.PositiveSmallIntegerField(default=0)
+    available_S = models.PositiveSmallIntegerField(default=0)
+    available_M = models.PositiveSmallIntegerField(default=0)
+    available_L = models.PositiveSmallIntegerField(default=0)
+    available_XL = models.PositiveSmallIntegerField(default=0)
+
 
     def to_dict(self):
         return {'id': self.pk,
                 'name': self.name,
                 'brand': self.brand,
                 'price': self.price,
-                'available': self.available,
+                'discount': self.discount,
                 'img_link': self.img_link,
-                'size': self.size
+                'bike_type': self.bike_type,
+                'available_XS': self.available_XS,
+                'available_S': self.available_S,
+                'available_M': self.available_M,
+                'available_L': self.available_L,
+                'available_XL': self.available_XL,
         }
 
     def __str__(self):
         return str(self.name)
-
-    class Meta:
-        abstract = True
-
-
-class MountBikes(Bikes):
-    pass
 
 
 class MountBikesDescription(models.Model):
@@ -39,7 +52,7 @@ class MountBikesDescription(models.Model):
                                 to_field='name', primary_key=True)
 
     description = models.CharField(max_length=3000)
-    sex = models.BooleanField(default=True)
+    unisex = models.BooleanField(default=True)
 
     frame = models.CharField(max_length=200)
     fork = models.CharField(max_length=200)
@@ -55,7 +68,7 @@ class MountBikesDescription(models.Model):
 
     def to_dict(self):
         return {'description': self.description,
-                'sex': self.sex,
+                'sex': self.unisex,
                 'frame': self.frame,
                 'fork': self.fork,
                 'crank': self.crank,

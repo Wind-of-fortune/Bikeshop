@@ -1,16 +1,18 @@
-a = MountBikes(name="argus comp 2018", brand="Mongoose", year=2018, price=51600, date=timezone.now(), img_link="argus comp 2018.jpg", size='XS, MM, LL')
+from bike_app.models import *
 
-b = MountBikes(name="zaskar comp 2018", brand="GT", year=2018, price=63200, date=timezone.now(), img_link="zaskar comp 2018.jpg", size='MM, XL')
+a = MountBikes(name="argus comp 2018", brand="Mongoose", year=2018, fake_price=51600, price=51600, img_link="argus comp 2018.jpg")
 
-c = MountBikes(name="zaskar elite 2018", brand="GT", year=2018, price=79100, date=timezone.now(), img_link="zaskar elite 2018.jpg", size='LL')
+b = MountBikes(name="zaskar comp 2018", brand="GT", year=2018, fake_price=63200, price=63200, img_link="zaskar comp 2018.jpg")
 
-d = MountBikes(name="x-vert motion 2017", brand="Corratec", year=2017, price=34000, date=timezone.now(), img_link="x-vert motion 2017.jpg", size='SS')
+c = MountBikes(name="zaskar elite 2018", brand="GT", year=2018, fake_price=79100, price=79100, img_link="zaskar elite 2018.jpg")
 
-e = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, price=65500, date=timezone.now(), img_link="x-vert expert 2018.jpg", size='SS, MM, LL, XL')
+d = MountBikes(name="x-vert motion 2017", brand="Corratec", year=2017, fake_price=34000, price=34000, img_link="x-vert motion 2017.jpg")
 
-f = MountBikes(name="dragon pro 2016", brand="Jamis", year=2016, price=94000, date=timezone.now(), img_link="dragon pro 2016.jpg", size='MM, XL')
+e = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, fake_price=65500, price=65500, img_link="x-vert expert 2018.jpg")
 
-g = MountBikes(name="eden race 2016", brand="Jamis", year=2016, price=104000, date=timezone.now(), img_link="eden race 2016.jpg", size='XS')
+f = MountBikes(name="dragon pro 2016", brand="Jamis", year=2016, fake_price=94000, price=94000, img_link="dragon pro 2016.jpg")
+
+g = MountBikes(name="eden race 2016", brand="Jamis", year=2016, fake_price=104000, price=104000, img_link="eden race 2016.jpg")
 
 a.save()
 b.save()
@@ -42,7 +44,7 @@ g1.save()
 
 
 from django.utils import timezone
-from bike_app.models import *
+
 
 
 

@@ -78,11 +78,36 @@ def brand_filter(querylist):
 def size_filter(size):
     querylist = MountBikes.objects.all()
     bikes = []
-    for i in querylist:
-        if i.size.find(str(size.upper())) != -1:
-            bikes.append(i)
-    return bikes
 
+    if size == 'xs':
+        for i in querylist:
+            if i.available_XS > 0:
+                bikes.append(i)
+        return bikes
+
+    if size == 'ss':
+        for i in querylist:
+            if i.available_S > 0:
+                bikes.append(i)
+        return bikes
+
+    if size == 'mm':
+        for i in querylist:
+            if i.available_M > 0:
+                bikes.append(i)
+        return bikes
+
+    if size == 'll':
+        for i in querylist:
+            if i.available_L > 0:
+                bikes.append(i)
+        return bikes
+
+    if size == 'xl':
+        for i in querylist:
+            if i.available_XL > 0:
+                bikes.append(i)
+        return bikes
 
 def price_min_max(querylist, price_min, price_max):
     bikes = []

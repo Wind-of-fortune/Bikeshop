@@ -14,9 +14,9 @@ class AllUsers (AbstractUser):
     token = models.UUIDField(default=get_token, editable=False, unique=True)
 
 
-class Basket (models.Model):
-    user = models.OneToOneField(AllUsers, on_delete=models.CASCADE, related_name='userbasket',
-                                to_field='id', primary_key=True)
-
-
+# class Basket (models.Model):
+#     user = models.OneToOneField(AllUsers, on_delete=models.CASCADE, related_name='userbasket',
+#                                 to_field='id', primary_key=True)
+#
+#
 

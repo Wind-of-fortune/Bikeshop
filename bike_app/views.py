@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from bike_app.models import *
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import get_user
 
+from bike_app.models import *
 from bike_app.View_functions import *
 
 
@@ -18,6 +18,7 @@ def mountbike(request):
     filtered_by_size_bikes = False
 
     available = request.GET.get('available')
+    discount = request.GET.get('discount')
     price = request.GET.get('price')
     size = request.GET.get('size')
     brand = request.GET.get('brand')
@@ -53,8 +54,35 @@ def mountbike(request):
             bikes = []
 
         for i in old_bikes:  # sort by available
-            if i.available == True:
+            if i.available_XS > 0:
                 bikes.append(i)
+                continue
+            if i.available_S > 0:
+                bikes.append(i)
+                continue
+            if i.available_M > 0:
+                bikes.append(i)
+                continue
+            if i.available_L > 0:
+                bikes.append(i)
+                continue
+            if i.available_XL > 0:
+                bikes.append(i)
+                continue
+
+
+    if discount == 'true':
+        if filtered_by_size_bikes != False:
+            old_bikes = filtered_by_size_bikes
+            bikes = []
+        else:
+            old_bikes = bikes
+            bikes = []
+
+        for i in old_bikes:  # sort by discount
+            if i.discount > 0:
+                bikes.append(i)
+
 
     if price_min != '' or price_min != None and price_max != '' or price_max != None:
         try:
@@ -73,6 +101,7 @@ def mountbike(request):
             'bikes_2': bikes_2,
             'table_column': table_column,
             'available1': available,
+            'discount': discount,
             'price1': price,
             'size1': size,
             'brand1': brand,
@@ -94,12 +123,22 @@ def mountbike_model(request):
     for name in MountBikesDescription.objects.all():
         if name.mountbikes.name == bike_name:
             this_bike = name
-            new_sizes = this_bike.mountbikes.size
-            new_sizes = new_sizes.replace('SS', 'S')
-            new_sizes = new_sizes.replace('MM', 'M')
-            new_sizes = new_sizes.replace('LL', 'L')
+            new_sizes = ''
+            if this_bike.mountbikes.available_XS > 0:
+                new_sizes+='  XS'
+            if this_bike.mountbikes.available_S > 0:
+                new_sizes+='  S'
+            if this_bike.mountbikes.available_M > 0:
+                new_sizes+='  M'
+            if this_bike.mountbikes.available_L > 0:
+                new_sizes+='  L'
+            if this_bike.mountbikes.available_XL > 0:
+                new_sizes+='  XL'
 
-            if this_bike.sex == True:
+            if new_sizes == '':
+                new_sizes = 'Товара нет в наличие'
+
+            if this_bike.unisex == True:
                 sex = 'Унисекс'
             else:
                 sex = 'Женский'
@@ -122,7 +161,6 @@ def mountbike_model(request):
                     'size': new_sizes,
                     'price': this_bike.mountbikes.price,
                     'brand': this_bike.mountbikes.brand,
-                    'available': this_bike.mountbikes.available,
                     'img_link': this_bike.mountbikes.img_link,
                     'go_back': mountbike_url,
                     'username': username,

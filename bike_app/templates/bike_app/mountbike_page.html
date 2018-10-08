@@ -45,6 +45,8 @@
           
           <input class="btn btn-info" type="submit" value="Брэнд" id="brand">
 
+          <input class="btn btn-info" type="submit" value="Скидка" id="discount">
+
         <div class="col"></div>
             
               <div class="form-row align-items-center">
@@ -92,12 +94,22 @@
                   <button type="button" class="btn btn-light"  type="submit" value="Submit" id="{{ bike.name }}">
                       <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200">    
                       <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
-                      <p class="text-center">   <div class="col">  Price - {{ bike.price }}  ₽ </div>    </p>   
-                      {% if bike.available %}
+                      {% if bike.discount > 0 %}
+                           <p class="text-center">   <div class="col">  Old Price - <strike> {{ bike.fake_price }}  ₽ </strike> </div>    </p>
+                           <p class="text-center">   <div class="col">  New Price - {{ bike.price }}  ₽ </div>    </p>
+
+                        {% else %}
+                      <p class="text-center">   <div class="col">  Price - {{ bike.price }}  ₽ </div>    </p> 
+                      <p class="text-center">   <div class="col">   </div>    </p> 
+                      {%endif%}
+
+                      {% if bike.available_XS > 0 or bike.available_S > 0 or bike.available_M > 0 or bike.available_L > 0 or bike.available_XL > 0 %}   
                           <p class="text-center">   <div class="col">   </div>    </p>  
+                          <p class="text-center">   <div class="col">   </div>    </p> 
                       {% else %}
                           <p class="text-center">   <div class="col">  Нет в наличии </div>    </p>
-                      {%endif%}   
+                      {%endif%}
+                    
                       <p class="text-center">   <div class="col">   </div>    </p>    
                   </button>
                 </p>
@@ -110,12 +122,22 @@
                 <button type="button" class="btn btn-light"  type="submit" value="Submit" id="{{ bike.name }}">
                     <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
                     <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
-                    <p class="text-center">   <div class="col">  Price - {{ bike.price }} ₽ </div>    </p>   
-                    {% if bike.available %}
+                    
+                    {% if bike.discount > 0 %}
+                           <p class="text-center">   <div class="col">  Old Price - <strike> {{ bike.fake_price }}  ₽ </strike>   </div>    </p>
+                           <p class="text-center">   <div class="col">  New Price - {{ bike.price }}  ₽ </div>    </p>
+
+                        {% else %}
+                      <p class="text-center">   <div class="col">  Price - {{ bike.price }}  ₽ </div>    </p> 
+                      <p class="text-center">   <div class="col">   </div>    </p> 
+                      {%endif%}
+
+                    {% if bike.available_XS > 0 or bike.available_S > 0 or bike.available_M > 0 or bike.available_L > 0 or bike.available_XL > 0 %}                                  
                         <p class="text-center">   <div class="col">   </div>    </p>  
+
                     {% else %}
                         <p class="text-center">   <div class="col">  Нет в наличии </div>    </p>
-                    {%endif%}   
+                    {%endif%}
                     <p class="text-center">   <div class="col">   </div>    </p>   
                 </button>
               </p>
@@ -138,7 +160,7 @@
 <script type="application/javascript">
     (function (window, document, $) {
 
-        filter = {'available':'', 'price':'', 'brand':'', 'size':'', 'pricemin':'', 'pricemax':'' }
+        filter = {'available':'', 'price':'', 'brand':'', 'size':'', 'pricemin':'', 'pricemax':'', 'discount':'' }
         
         {% if available1  %}
          filter.available = "{{ available1 }}"        
@@ -157,6 +179,9 @@
         {% endif %}
         {% if pricemax  %}
          filter.pricemax = "{{ pricemax }}"
+        {% endif %}
+        {% if discount  %}
+         filter.discount = "{{ discount }}" 
         {% endif %}
 
 
@@ -220,6 +245,12 @@
             button_min.placeholder = filter.pricemin
             button_max.placeholder = filter.pricemax
         }
+
+
+        if (filter.discount == 'true') {
+            var button = document.getElementById('discount')
+            button.className = "btn btn-success"
+        }
  
 
         
@@ -268,6 +299,23 @@
                 }
             })
         })
+
+
+          document.addEventListener('DOMContentLoaded', function () {
+                      var control = document.getElementById('discount');
+                      control.addEventListener('click', function (event) {
+                          if (control.className == "btn btn-info") {
+                              filter['discount'] = true
+                              sendRequest()
+                              window.location.href = new_link
+                          } else {
+                            control.className = "btn btn-info";
+                            filter['discount'] = ''
+                            sendRequest()                  
+                            window.location.href = new_link
+                          }
+                      })
+                  })
   
 
 
