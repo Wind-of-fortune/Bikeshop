@@ -1,15 +1,19 @@
 from django.shortcuts import render
 from bike_app.models import *
 from django.http import HttpResponse, JsonResponse
+from django.contrib.auth import get_user
 
 from bike_app.View_functions import *
 
 
 def main_page(request):
-    return render(request, 'bike_app/main_page.html')
+    username = delete_anonim(request)
+    return render(request, 'bike_app/main_page.html', {'username': username})
 
 
 def mountbike(request):
+    username = delete_anonim(request)
+
     bikes = MountBikes.objects.all()
     filtered_by_size_bikes = False
 
@@ -74,12 +78,15 @@ def mountbike(request):
             'brand1': brand,
             'pricemin': price_min,
             'pricemax': price_max,
+            'username': username,
             }
 
     return render(request, 'bike_app/mountbike_page.html', data )
 
 
 def mountbike_model(request):
+    username = delete_anonim(request)
+
     bike_name, mountbike_url = get_bike_name_and_last_page_url(request.get_full_path(), request.get_raw_uri())
     new_sizes = ''
     sex = ''
@@ -118,6 +125,7 @@ def mountbike_model(request):
                     'available': this_bike.mountbikes.available,
                     'img_link': this_bike.mountbikes.img_link,
                     'go_back': mountbike_url,
+                    'username': username,
                 }
             return render(request, 'bike_app/mountbike_id.html', data)
 

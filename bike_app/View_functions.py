@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user
+
 from bike_app.models import MountBikes
 
 
@@ -107,3 +109,10 @@ def get_bike_name_and_last_page_url(mountbike_path, mountbike_uri):
 
     return bike_name, mountbike_uri
 
+
+# deleted AnonymousUser from templates
+def delete_anonim (request):
+    if str(get_user(request)) == 'AnonymousUser':
+        return None
+    else:
+        return get_user(request)

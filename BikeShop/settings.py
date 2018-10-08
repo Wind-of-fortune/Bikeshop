@@ -38,12 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # debug:
+
     #my_apps
-    'bike_app',
-    'auth_app',
+    'bike_app.apps.BikeAppConfig',
+    'authentification_app.apps.AuthentificationAppConfig',
 ]
 
 MIDDLEWARE = [
+# debug:
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -111,19 +115,19 @@ AUTH_PASSWORD_VALIDATORS = [
 # Authorization
 # https://docs.djangoproject.com/es/2.0/topics/auth/
 
-AUTH_USER_MODEL = 'auth_app.CustomUser'
-LOGIN_URL = 'auth/login'
-LOGIN_REDIRECT_URL = 'bike/'
-
+AUTH_USER_MODEL = 'authentification_app.AllUsers'
+# LOGIN_URL = 'auth/login'
+# LOGIN_REDIRECT_URL = 'bike/'
+#
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-]
+     'django.contrib.auth.backends.ModelBackend',
+ ]
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 

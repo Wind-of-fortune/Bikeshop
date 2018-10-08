@@ -1,0 +1,117 @@
+{% load static %}
+{% block content %}
+
+
+{% if username %}
+
+<a href="{% url 'authentification_app:login' %}"> 
+<button type="button" class="btn btn-info"  type="submit" value="Submit">    
+          <p class="text-center">   <div class="col"> ВХОД В ЛИЧНЫЙ КАБИНЕТ </div>    </p>    </button>
+</a>
+
+<a href="{% url 'authentification_app:logout' %}"> 
+<button type="button" class="btn btn-info"  type="submit" value="Submit">    
+          <p class="text-center">   <div class="col">ЗАВЕРШИТЬ СЕССИЮ ({{ username }} )</div>    </p>    </button>
+</a>
+
+{% else %}
+
+<form action= "{% url 'authentification_app:login' %}" method="post" >
+	{% csrf_token %}
+	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#entering" data-whatever="@getbootstrap">
+		<p class="text-center">   <div class="col"> ВХОД & РЕГИСТРАЦИЯ </div>    </p> </button>  
+
+            <div class="modal fade" id="entering" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><h4 class="text-dark">Вход</h4></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="form-group">
+                      	
+                        <label for="recipient-name" class="col-form-label" >  <h5 class="text-dark">Введите e-mail:</h5>  </label>
+                        <input type="text" class="form-control"  placeholder='e-mail' name= "email" id="email">
+                      </div>
+                      <div class="form-group">
+                      
+                         <label for="recipient-name" class="col-form-label" > <h5 class="text-dark">Введите пароль:</h5>  </label>
+                        <input type="text" class="form-control" placeholder='password' name= "password" id="password"></textarea>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <a href="{% url 'authentification_app:register' %}">  <button type="button" class="btn btn-primary"> Registration </button> </a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success" id="OK"> OK </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+</form>
+
+{% endif %}
+
+<!-- <script type="application/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
+
+<script type="application/javascript">
+    (function (window, document, $) {
+
+        var login_data = {'email':'', 'password':''};
+		console.log('11111')
+
+        function sendRequest(d, t) {
+            var my_link = "{% url 'authentification_app:login' %}"
+            console.log(d, t.value)
+
+            $.ajaxSetup({
+			  headers: { "X-CSRFToken": '{{csrf_token}}' }
+			});
+
+
+            var request = $.ajax({
+	            type:'post',
+	     //        beforeSend: function(request) {
+				  //   request.setRequestHeader("X-CSRF-Token", t.value);
+				  // },
+	            url: my_link,
+	            crossDomain: true,
+	            data: d
+	        })
+	        request.done(function(info) {
+				console.log(info)
+
+				if (info.success === true) {
+					console.log('22')
+				}
+
+			});
+			 request.fail(function(info) {
+				console.log('request - fail')
+			});
+		}
+	    document.addEventListener('DOMContentLoaded', function () {
+	        var control = document.getElementById('OK');
+	        var email = document.getElementById('email');
+	        var token = document.getElementsByName('csrfmiddlewaretoken')[0]
+        	var password = document.getElementById('password');
+
+            control.addEventListener('click', function (event) {
+            	login_data['email'] = email.value;
+            	login_data['password'] = password.value;
+                sendRequest(login_data, token)
+	                	
+	        })
+	     })
+    })(window, document, jQuery); 
+</script>
+
+ -->
+
+
+{% endblock %}
+

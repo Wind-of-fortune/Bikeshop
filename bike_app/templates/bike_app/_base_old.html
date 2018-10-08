@@ -37,7 +37,36 @@
       <button type="button" class="btn btn-info"  type="submit" value="Submit">    
           <p class="text-center">   <div class="col">СЕРВИС И ГАРАНТИЯ</div>    </p>    </button>
 
-      {% include 'authentification_app/login_form.html' %}
+      <button type="button" class="btn btn-info" data-toggle="modal" data-target="#entering" data-whatever="@getbootstrap"> ВХОД & РЕГИСТРАЦИЯ </button>  
+                    <div class="modal fade" id="entering" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"><h4 class="text-dark">Вход</h4></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <form>
+                              <div class="form-group">
+                                <label for="recipient-name" class="col-form-label" >  <h5 class="text-dark">Введите e-mail:</h5>  </label>
+                                <input type="text" class="form-control" id="Enteremail" placeholder='e-mail'>
+                              </div>
+                              <div class="form-group">
+                                 <label for="recipient-name" class="col-form-label" > <h5 class="text-dark">Введите пароль:</h5>  </label>
+                                <input type="text" class="form-control" id="Enterpassword" placeholder='password'></textarea>
+                              </div>
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <a href="{% url 'bike_app:main_page' %}"> <button type="button" class="btn btn-primary">Registration</button> </a>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success">OK</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
       <button type="button" class="btn btn-info"  type="submit" value="Submit">    
           <p class="text-center">   <div class="col">КОРЗИНА</div>     </p>    </button>

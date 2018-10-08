@@ -10,7 +10,7 @@ class Bikes(models.Model):
     date = models.DateTimeField(default=timezone.now)
     img_link = models.CharField(max_length=150)
     available = models.BooleanField(default=True)
-    size = models.CharField(max_length=50)
+    size = models.CharField(max_length=30)
 
     def to_dict(self):
         return {'id': self.pk,
