@@ -117,26 +117,15 @@ def mountbike_model(request):
     username = delete_anonim(request)
 
     bike_name, mountbike_url = get_bike_name_and_last_page_url(request.get_full_path(), request.get_raw_uri())
-    new_sizes = ''
-    sex = ''
 
     for name in MountBikesDescription.objects.all():
         if name.mountbikes.name == bike_name:
             this_bike = name
-            new_sizes = ''
-            if this_bike.mountbikes.available_XS > 0:
-                new_sizes+='  XS'
-            if this_bike.mountbikes.available_S > 0:
-                new_sizes+='  S'
-            if this_bike.mountbikes.available_M > 0:
-                new_sizes+='  M'
-            if this_bike.mountbikes.available_L > 0:
-                new_sizes+='  L'
-            if this_bike.mountbikes.available_XL > 0:
-                new_sizes+='  XL'
 
-            if new_sizes == '':
-                new_sizes = 'Товара нет в наличие'
+            new_sizes = size_string(this_bike)
+            size_l = size_list(new_sizes)
+
+            print('SIZE LIST --- ', size_l)
 
             if this_bike.unisex == True:
                 sex = 'Унисекс'
@@ -159,6 +148,7 @@ def mountbike_model(request):
                     'seat': this_bike.seat,
                     'warranty': this_bike.warranty,
                     'size': new_sizes,
+                    'size_list': size_l,
                     'price': this_bike.mountbikes.price,
                     'brand': this_bike.mountbikes.brand,
                     'img_link': this_bike.mountbikes.img_link,

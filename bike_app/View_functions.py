@@ -141,3 +141,31 @@ def delete_anonim (request):
         return None
     else:
         return get_user(request)
+
+
+def size_string(this_bike):
+    new_sizes = ''
+    if this_bike.mountbikes.available_XS > 0:
+        new_sizes += '  XS'
+    if this_bike.mountbikes.available_S > 0:
+        new_sizes += '  S'
+    if this_bike.mountbikes.available_M > 0:
+        new_sizes += '  M'
+    if this_bike.mountbikes.available_L > 0:
+        new_sizes += '  L'
+    if this_bike.mountbikes.available_XL > 0:
+        new_sizes += '  XL'
+    if new_sizes == '':
+        new_sizes = 'Товара нет в наличие'
+
+    return new_sizes
+
+def size_list(new_sizes):
+    size_list = []
+    if new_sizes != 'Товара нет в наличие':
+        sl = new_sizes.split(' ')
+        for i in range(len(sl)):
+            if sl[i] != '':
+                size_list.append(sl[i])
+
+    return size_list
