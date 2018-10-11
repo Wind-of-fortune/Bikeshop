@@ -28,7 +28,7 @@ def ls(request):
             return render(request, 'authentification_app/user_privat_account.html', data)
         else:
             return HttpResponse('Поздравляем вас добавили в игнор лист, вам запрещено у нас что-либо покупать')
-        
+
     return HttpResponse('Erorrrrrr')
 
 

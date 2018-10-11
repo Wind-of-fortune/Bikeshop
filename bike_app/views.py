@@ -4,6 +4,7 @@ from django.contrib.auth import get_user
 
 from bike_app.models import *
 from bike_app.View_functions import *
+from order_app.models import Basket
 
 
 def main_page(request):
@@ -112,8 +113,53 @@ def mountbike(request):
 
     return render(request, 'bike_app/mountbike_page.html', data )
 
+class BasketState:
+    name = ''
+    price=''
 
 def mountbike_model(request):
+    if request.method == 'POST':
+        u = request.user
+        if u.is_authenticated:
+            if u.is_active:
+                basket_item_xs = request.POST.get('XS')
+                basket_item_s = request.POST.get('S')
+                basket_item_m = request.POST.get('M')
+                basket_item_l = request.POST.get('L')
+                basket_item_xl = request.POST.get('XL')
+                s = [basket_item_xs, basket_item_s, basket_item_m, basket_item_l, basket_item_xl]
+                size=''
+                for i in range(len(s)):
+                    if s[i] != None:
+                        size = s[i]
+                if size == '':
+                    return render(request, 'order_app/basket_add.html', {'miss': 'Такого товара нет'})
+
+                new_order = Basket(item_name=BasketState.name,
+                                   item_price=BasketState.price,
+                                   item_size= size,
+                                   username= u.username,
+                                   date_created=timezone.now(),
+                                   )
+                new_order.save()
+
+                data = {'id': u.pk,
+                        'username': u.username,
+                        'first_name': u.first_name,
+                        'last_name': u.last_name,
+                        'email': u.email,
+                        'money': u.money,
+                        'item_name': BasketState.name,
+                        'item_size': size,
+                        'item_price': BasketState.price
+                        }
+
+
+                return render(request, 'order_app/basket_add.html', data)
+            else:
+                return HttpResponse('Поздравляем вас добавили в игнор лист, вам запрещено у нас что-либо покупать')
+
+
     username = delete_anonim(request)
 
     bike_name, mountbike_url = get_bike_name_and_last_page_url(request.get_full_path(), request.get_raw_uri())
@@ -155,6 +201,9 @@ def mountbike_model(request):
                     'go_back': mountbike_url,
                     'username': username,
                 }
+            BasketState.name = this_bike.mountbikes.name
+            BasketState.price = this_bike.mountbikes.price
+
             return render(request, 'bike_app/mountbike_id.html', data)
 
     return HttpResponse('Something goes wrong')

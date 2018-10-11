@@ -1,9 +1,10 @@
 from django.urls import path
-from bike_app.views import *
+from order_app.views import *
 
-app_name = 'bike_app'
+app_name = 'order_app'
 
 urlpatterns = [
-    path('', main_page, name='main_page'),
+    path('basket/', basket, name='basket'),
+    path('makeorder/', make_order, name='make_order'),
 
 ]

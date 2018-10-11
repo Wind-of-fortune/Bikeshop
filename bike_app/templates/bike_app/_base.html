@@ -39,8 +39,15 @@
 
       {% include 'authentification_app/login_form.html' %}
 
-      <button type="button" class="btn btn-info"  type="submit" value="Submit">    
-          <p class="text-center">   <div class="col">КОРЗИНА</div>     </p>    </button>
+      {% if username %}
+          <a href="{% url 'order_app:basket' %}"> 
+            <button type="button" class="btn btn-info"  type="submit" value="Submit">    
+                <p class="text-center">   <div class="col">КОРЗИНА</div>     </p>    </button>
+          </a>
+      {% else %}
+            <button type="button" class="btn btn-info"  type="submit" value="Submit">    
+                <p class="text-center">   <div class="col">КОРЗИНА</div>     </p>    </button>
+      {% endif %}
 
       <div class="col"></div>
       <div class="col"></div>

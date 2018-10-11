@@ -18,7 +18,7 @@
 
       {% if user.is_authenticated %}
       <div class="col">
-        <form action= "{% url 'authentification_app:ls' %}" method="post" >
+        <form action= "{% url 'bike_app:mountbike_model' %}" method="post" >
           {% csrf_token %}
           <button type="button" class="btn btn-info" data-toggle="modal" data-target="#entering" data-whatever="@getbootstrap">
                    В Корзину  </button>  

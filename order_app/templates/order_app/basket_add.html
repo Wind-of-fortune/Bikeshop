@@ -91,11 +91,11 @@
 
       {% endif %}
 
-
-        <a href="{% url 'order_app:basket' %}"> 
+      <a href="{% url 'order_app:basket' %}"> 
         <button type="button" class="btn btn-info"  type="submit" value="Submit">    
             <p class="text-center">   <div class="col">КОРЗИНА</div>     </p>    </button>
       </a>
+
 
       <div class="col"></div>
       <div class="col"></div>
@@ -125,38 +125,6 @@
   <main>
     {% block content %}
 
-      {% if err %}
-
-
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col"> 
-              <p class="text-center"> <h2 class="text-dark"> {{ err }}  </h2></p>  
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
-
-
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col"> 
-             
-              <p class="text-center"> <img src="{% static 'authentification_app/no_bike.png' %}" height="300" width="300">  </p>
-             
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
-
-
-
-
-
-      {% else %}
-
 
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
@@ -170,14 +138,33 @@
           </div>
       </div>
 
-
+{% if miss %}
+  
+  <div class="p-2 mb-0 bg-light text-white">
+          <div class="row">
+            <div class="col"></div>
+            <div class="col"> 
+              <p class="text-center"> <h2 class="text-dark"> Товара нет в наличие </h2>></p>  
+            </div>
+            <div class="col"></div>
+          </div>
+      </div>
 
 
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
+            <div class="col">
+              <img height="30"> 
+            </div>  
+          </div>
+      </div>
+
+{% else %}
+      <div class="p-2 mb-0 bg-light text-white">
+          <div class="row">
             <div class="col"></div>
             <div class="col"> 
-              <p class="text-center"> <h2 class="text-dark"> Добро пожаловать {{ username }}  </h2>></p>  
+              <p class="text-center"> <h2 class="text-dark"> Товар добавлен в корзину </h2>></p>  
             </div>
             <div class="col"></div>
           </div>
@@ -193,144 +180,12 @@
       </div>
 
 
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Баланс вашего счета  -    {{ money }} <h4></p> 
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
-
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Активных заказов  -  0 <h4></p> 
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
-
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Завершенных заказов  -  0 <h4></p> 
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
 
 
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> <h4></p> 
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
+    
+{% endif %}
 
-
-
-        {% if error %}
-              <div class="p-2 mb-0 bg-light text-dark">
-                <div class="row">
-                  <div class="col"></div>
-                  <div class="col"> 
-                    <p class="text-center"> <h2 class="text-danger "> {{ error }}  </h2></p>  
-                  </div>
-                  <div class="col"></div>
-                </div>
-            </div>
-        {% endif %}
-
-
-
-
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-
-            <div class="col">
-                  <form action= "{% url 'authentification_app:login' %}" method="post" >
-                    {% csrf_token %}
-                    <button type="button" class="btn btn-info mb-0" data-toggle="modal" data-target="#entering" data-whatever="@getbootstrap">
-                       Изменить пароль  </button>  
-                              <div class="modal fade" id="entering" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel"><h4 class="text-dark">Подтверждение пароля</h4></h5>
-                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
-                                    </div>
-                                    <div class="modal-body">
-                                      <form>
-                                       
-                                        <div class="form-group">
-                                        
-                                           <label for="recipient-name" class="col-form-label" > <h5 class="text-dark">Введите текущий пароль:</h5>  </label>
-
-                                          <input type="text" class="form-control" placeholder='password' name= "password" id="password"></textarea>
-
-                                        </div>
-                                      </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        
-                                      <a href="{% url 'authentification_app:login' %}">  <button type="submit" class="btn btn-success"> OK </button> </a>
-
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                  </form>
-            </div>
-
-
-            <div class="col-1"></div>
-
-            <div class="col">
-                  <form action= "{% url 'authentification_app:delete_account' %}" method="post" >
-                    {% csrf_token %}
-                    <button type="button" class="btn btn-info mb-0" data-toggle="modal" data-target="#accaunt" data-whatever="@getbootstrap">
-                       Удалить аккаунт  </button>  
-                              <div class="modal fade" id="accaunt" tabindex="-1" role="dialog" aria-labelledby="accauntLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="accauntLabel"><h4 class="text-dark">Вы действительно хотите удалить свой аккаунт ?</h4></h5>
-                                    </div>
-                                    <div class="modal-footer">
-
-                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                                      <button type="submit" class="btn btn-success"> OK </button> 
-
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                  </form>
-            </div>
-            
-            <div class="col"></div>
-          </div>
-      </div>
-
-
-
-
-
-      
-
-
-      {% endif %}
-
-
-    {% endblock %}
+{% endblock %}
   </main>
 
 

@@ -40,9 +40,10 @@
 
       {% if username %}
 
+      <a href="{% url 'authentification_app:login' %}"> 
       <button type="button" class="btn btn-info"  type="submit" value="Submit">    
-                <p class="text-center">   <div class="col"> ВЫ В ЛИЧНОМ КАБИНЕТЕ </div>    </p>    </button>
-      
+                <p class="text-center">   <div class="col"> ВХОД В ЛИЧНЫЙ КАБИНЕТ </div>    </p>    </button>
+      </a>
 
       <a href="{% url 'authentification_app:logout' %}"> 
       <button type="button" class="btn btn-info"  type="submit" value="Submit">    
@@ -92,10 +93,8 @@
       {% endif %}
 
 
-        <a href="{% url 'order_app:basket' %}"> 
-        <button type="button" class="btn btn-info"  type="submit" value="Submit">    
-            <p class="text-center">   <div class="col">КОРЗИНА</div>     </p>    </button>
-      </a>
+      <button type="button" class="btn btn-info"  type="submit" value="Submit">    
+          <p class="text-center">   <div class="col">КОРЗИНА</div>     </p>    </button>
 
       <div class="col"></div>
       <div class="col"></div>
@@ -125,59 +124,13 @@
   <main>
     {% block content %}
 
-      {% if err %}
 
 
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
             <div class="col"></div>
             <div class="col"> 
-              <p class="text-center"> <h2 class="text-dark"> {{ err }}  </h2></p>  
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
-
-
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col"> 
-             
-              <p class="text-center"> <img src="{% static 'authentification_app/no_bike.png' %}" height="300" width="300">  </p>
-             
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
-
-
-
-
-
-      {% else %}
-
-
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col"> 
-              
-                <p class="text-center"> <img src="{% static 'authentification_app/welcome.png' %}" height="175">  </p>
-             
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
-
-
-
-
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col"> 
-              <p class="text-center"> <h2 class="text-dark"> Добро пожаловать {{ username }}  </h2>></p>  
+              <p class="text-center"> <h2 class="text-dark"> {{ username }}, добро пожаловать в корзину  </h2>></p>  
             </div>
             <div class="col"></div>
           </div>
@@ -196,35 +149,7 @@
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
             <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Баланс вашего счета  -    {{ money }} <h4></p> 
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
-
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Активных заказов  -  0 <h4></p> 
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
-
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Завершенных заказов  -  0 <h4></p> 
-            </div>
-            <div class="col"></div>
-          </div>
-      </div>
-
-
-      <div class="p-2 mb-0 bg-light text-white">
-          <div class="row">
-            <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> <h4></p> 
+            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Список товаров в вашей корзине: <h4></p> 
             </div>
             <div class="col"></div>
           </div>
@@ -232,90 +157,47 @@
 
 
 
-        {% if error %}
-              <div class="p-2 mb-0 bg-light text-dark">
-                <div class="row">
-                  <div class="col"></div>
-                  <div class="col"> 
-                    <p class="text-center"> <h2 class="text-danger "> {{ error }}  </h2></p>  
-                  </div>
-                  <div class="col"></div>
-                </div>
+      {% for user_item in orders %}
+        <div class="p-0 mb-0 bg-light text-white">
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="col-3">  <p class="text-center"> <p class="text-dark"> {{forloop.counter}}. {{ user_item.item_name }} {{ user_item.item_size }}<p></p> </div>
+            <div class="col"></div>
+            <div class="col-1">  <p class="text-right"> <p class="text-dark"> Цена-{{ user_item.item_price }}₽  <p></p> </div>    
+            <div class="col"> <p></p>
+
+              <!-- <a href="{% url 'order_app:basket' %}">  -->
+              <button type="button" class="btn btn-danger"  type="submit" value = "no" id="del{{user_item.id}}" name="del{{user_item.id}}">
+               удалить товар </button>
+             <!-- </a> -->
+
             </div>
-        {% endif %}
-
-
+            <div class="col"> <p></p>
+              <button type="button" class="btn btn-success"  type="submit" value="yes" id="add{{user_item.id}}" name="add{{user_item.id}}"
+              > оформить заказ </button> </div>
+                              <p></p>
+            <div class="col-2"></div>
+          </div>
+      </div>
+      {% endfor %}
 
 
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
-            <div class="col"></div>
-
             <div class="col">
-                  <form action= "{% url 'authentification_app:login' %}" method="post" >
-                    {% csrf_token %}
-                    <button type="button" class="btn btn-info mb-0" data-toggle="modal" data-target="#entering" data-whatever="@getbootstrap">
-                       Изменить пароль  </button>  
-                              <div class="modal fade" id="entering" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="exampleModalLabel"><h4 class="text-dark">Подтверждение пароля</h4></h5>
-                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                      </button>
-                                    </div>
-                                    <div class="modal-body">
-                                      <form>
-                                       
-                                        <div class="form-group">
-                                        
-                                           <label for="recipient-name" class="col-form-label" > <h5 class="text-dark">Введите текущий пароль:</h5>  </label>
+              <img height="30"> 
+            </div>  
+          </div>
+      </div>
 
-                                          <input type="text" class="form-control" placeholder='password' name= "password" id="password"></textarea>
 
-                                        </div>
-                                      </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        
-                                      <a href="{% url 'authentification_app:login' %}">  <button type="submit" class="btn btn-success"> OK </button> </a>
 
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                  </form>
+      <div class="p-2 mb-0 bg-light text-white">
+          <div class="row">
+            <div class="col"></div>
+            <div class="col">  
+               <button type="button" class="btn btn-success"  type="submit" value="Submit"> оформить заказ на все товары в корзине </button>
             </div>
-
-
-            <div class="col-1"></div>
-
-            <div class="col">
-                  <form action= "{% url 'authentification_app:delete_account' %}" method="post" >
-                    {% csrf_token %}
-                    <button type="button" class="btn btn-info mb-0" data-toggle="modal" data-target="#accaunt" data-whatever="@getbootstrap">
-                       Удалить аккаунт  </button>  
-                              <div class="modal fade" id="accaunt" tabindex="-1" role="dialog" aria-labelledby="accauntLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="accauntLabel"><h4 class="text-dark">Вы действительно хотите удалить свой аккаунт ?</h4></h5>
-                                    </div>
-                                    <div class="modal-footer">
-
-                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                                      <button type="submit" class="btn btn-success"> OK </button> 
-
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                  </form>
-            </div>
-            
             <div class="col"></div>
           </div>
       </div>
@@ -324,10 +206,10 @@
 
 
 
-      
 
 
-      {% endif %}
+
+    
 
 
     {% endblock %}
@@ -358,6 +240,75 @@
     </div>
 </div>
 
+
+<script type="application/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
+
+
+
+<script type="application/javascript">
+    (function (window, document, $) {
+            var pressed = []
+            var press = {'pressed':pressed}
+            
+            var ordered = []
+            var order = {'pressed':ordered}
+
+
+              function sendRequest(a) { 
+
+              $.ajaxSetup({
+                  headers: { "X-CSRFToken": '{{csrf_token}}' }
+                });
+              console.log('sacsaf')
+              new_link = "{% url 'order_app:basket' %}"
+                
+                var request = $.ajax({
+                    type:'get',
+                    url: new_link,
+                    crossDomain: true,
+                    data: press, 
+                });
+
+                request.done(function (data) {
+                    var result = press;
+                })
+            }
+
+
+
+
+            document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementsByClassName('btn btn-danger');
+           
+            for (var i = 0; i < control.length - 1; i++) {
+              event.target.addEventListener("click",function (event) { 
+                  
+                  if (event.target.className =='btn btn-danger') {
+                      pressed.push(event.target.id)
+                      window.location.href = ("{% url 'order_app:basket' %}" + '?' + encodeURIComponent(pressed))
+                }
+            })
+          }
+       })
+
+
+            document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementsByClassName('btn btn-success');     
+
+            for (var i = 0; i < control.length - 1; i++) {
+              event.target.addEventListener("click",function (event) { 
+                  
+                  if (event.target.className =='btn btn-success') {
+                      ordered.push(event.target.id)
+                      window.location.href = ("{% url 'order_app:make_order' %}" + '?' + encodeURIComponent(ordered))
+                }
+            })
+          }
+       })
+
+
+    })(window, document, jQuery);
+</script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
