@@ -1,0 +1,144 @@
+{% extends 'bike_app/_base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+      <div class="p-2 mb-0 bg-light text-white">
+          <div class="row">
+            <div class="col"></div>
+            <div class="col"> 
+              <p class="text-center"> <h2 class="text-dark"> Выберете способ оплаты и подтвердите заказ </h2>></p>  </div>
+            <div class="col"></div>
+          </div>
+      </div>
+
+
+      <div class="p-2 mb-0 bg-light text-white">
+          <div class="row">
+            <div class="col"></div>
+            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Сумма к оплате - {{ order.sum_price }} ₽ <h4></p>   </div>
+            <div class="col"></div>
+          </div>
+      </div>
+
+
+
+     <div class="p-0 mb-0 bg-light text-dark">
+          <div class="row">
+            <div class="col-4"></div>
+          
+            <div class="col-4">    
+
+               <form action= "{% url 'authentification_app:register' %}" method="post" >
+                {% csrf_token %}
+
+                 <div class="form-group">
+                  <p class="text-center"> 
+                   <button type="button" class="btn btn-info"  type="button" value="button" id="later" name="later">    
+                    <div class="col">Оплатить при получении</div>      </button>
+                     </p>  
+                </div>
+               
+                <div class="form-group">
+                  <p class="text-center">
+                   <button type="button" class="btn btn-info"  type="button" value="button" id="now" name="now">    
+                     <div class="col">Оплатить сейчас</div>        </button>
+                     </p> 
+                </div>
+
+                {% if money_error %}
+                <p class="text-center"> </p>
+                 <img height="10"> 
+
+                 <div class="form-group">
+                     <h5 class="text-center"> 
+                    <div class="col"> Извините, но на вашем счете недостаточно средств </div>      
+                     </h5>  
+                </div>
+
+                <p class="text-center"> </p>
+                 <img height="10"> 
+
+                {% endif %}
+                              
+
+                 <p class="text-center"> </p>
+                 <img height="60"> 
+                
+                <p class="text-center"> 
+                  <p class="text-center"> 
+                  <button type="button" class="btn btn-info mb-0" id="send" value='send'>подтвердить заказ</button> 
+                  </p>
+                </p>
+              </form>
+              <p class="text-center"> 
+             <button type="submit" class="btn btn-info mb-0" id="no" name='no'>отмена</button>             
+              </p>
+            </div>
+           
+            <div class="col-4"></div>
+          </div>
+      </div>
+   
+
+<script type="application/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
+
+
+
+<script type="application/javascript">
+    (function (window, document, $) {
+            
+
+            document.addEventListener('DOMContentLoaded', function () {
+            var later = document.getElementById('later');     
+            var now = document.getElementById('now');
+            var no = document.getElementById('no');
+            var send = document.getElementById('send');
+
+
+            no.addEventListener("click",function (event) { 
+                 window.location.href = ("{% url 'order_app:delete_order' %}" + '?' + '{{ order.pk }}')
+            })
+
+
+             
+        
+              later.addEventListener("click",function (event) { 
+                  if (later.className =='btn btn-info') {
+                      later.className ='btn btn-success'
+                      now.className = 'btn btn-info'
+                      
+                }
+            })
+
+              now.addEventListener("click",function (event) { 
+                  if (now.className =='btn btn-info') {
+                      now.className ='btn btn-success'
+                      later.className = 'btn btn-info'
+                      
+                }
+            })
+       })
+
+            send.addEventListener("click",function (event) { 
+                  if (later.className =='btn btn-success') {
+                      window.location.href = ("{% url 'order_app:submit_order' %}" + '?' + 'paylater')
+                      
+                }
+
+                if (now.className =='btn btn-success') {
+                      window.location.href = ("{% url 'order_app:submit_order' %}" + '?' + 'paynow')
+                      
+                }
+            })
+
+
+    })(window, document, jQuery);
+</script>
+
+
+    {% endblock %}
+
+

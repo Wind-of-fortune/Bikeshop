@@ -139,7 +139,6 @@ def mountbike_model(request):
                                    item_price=BasketState.price,
                                    item_size= size,
                                    username= u.username,
-                                   date_created=timezone.now(),
                                    )
                 new_order.save()
 
