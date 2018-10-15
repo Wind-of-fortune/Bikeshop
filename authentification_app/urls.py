@@ -11,8 +11,9 @@ urlpatterns = [
     path('register2/', user_register_part2, name='register2'),
     path('passwordchange/', password_change, name='password_change'),
     path('delete/', delete_account, name='delete_account'),
-    path ('ls/', ls, name = 'ls')
-
+    path ('ls/', ls, name = 'ls'),
+    path('useractiveorders/', user_active_orders, name='user_active_orders'),
+    path('userfinishedorders/', user_finished_orders, name='user_finished_orders'),
     # path('login/register/', CreateView.as_view(
     #     template_name='authentification_app/register.html',
     #     form_class=UserRegistartionForm,

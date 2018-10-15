@@ -18,12 +18,16 @@ def ls(request):
             basket_item_l = request.POST.get('L')
             basket_item_xl = request.POST.get('XL')
             print('CHOSEN BASKET ITEM ---- ', basket_item_xs, basket_item_s, basket_item_m, basket_item_l, basket_item_xl)
+            userorders = user_orders(u)
+            active_orders, finished_orders = userorders
             data = {'id': u.pk,
                     'username': u.username,
                     'first_name': u.first_name,
                     'last_name': u.last_name,
                     'email': u.email,
                     'money': u.money,
+                    'active_orders': active_orders,
+                    'finished_orders': finished_orders,
                     }
             return render(request, 'authentification_app/user_privat_account.html', data)
         else:
@@ -85,12 +89,16 @@ def user_login(request):
                         user = authenticate(username=u.username, password=password)
                         if user.is_active:
                             login(request, user)
+                            userorders = user_orders(u)
+                            active_orders, finished_orders = userorders
                             data = {'id': u.pk,
                                     'username': u.username,
                                     'first_name': u.first_name,
                                     'last_name': u.last_name,
                                     'email': u.email,
                                     'money': u.money,
+                                    'active_orders': active_orders,
+                                    'finished_orders': finished_orders,
                                     }
                             return render(request, 'authentification_app/user_privat_account.html', data)
         except Exception as err:
@@ -100,12 +108,16 @@ def user_login(request):
         return render(request, 'authentification_app/user_privat_account.html', user_is_None)
     else:
         u = request.user
+        userorders = user_orders(u)
+        active_orders, finished_orders = userorders
         data = {'id': u.pk,
                 'username': u.username,
                 'first_name': u.first_name,
                 'last_name': u.last_name,
                 'email': u.email,
                 'money': u.money,
+                'active_orders': active_orders,
+                'finished_orders': finished_orders,
                 }
         return render(request, 'authentification_app/user_privat_account.html',data)
 
@@ -186,18 +198,91 @@ def user_register_part2(request):
 
             user = authenticate(username=User_Registration.username, password=User_Registration.password)
             login(request, user)
-
+            userorders = user_orders(user)
+            active_orders, finished_orders = userorders
             data = {'id': user.pk,
                     'username': user.username,
                     'first_name': user.first_name,
                     'last_name': user.last_name,
                     'email': user.email,
                     'money': user.money,
+                    'active_orders': active_orders,
+                    'finished_orders': finished_orders,
                     }
             return render(request, 'authentification_app/user_privat_account.html', data)
         else:
             data = {'mistake':'uncorrect_email_answer'}
             return render(request, 'authentification_app/register_form.html', data)
+
+def user_active_orders(request):
+    u = request.user
+    if u.is_authenticated:
+        if u.is_active:
+            active_orders = []
+            for i in Order.objects.filter(username=u.username):
+                if i.is_active == True:
+                    active_orders.append(i)
+            active_orders.reverse()
+            for i in active_orders:
+                if i.order_item_size == 'watch item name column':
+                    a = i.order_item_name
+                    a = a.split(',')
+                    print(a)
+                    t = []
+                    d = []
+                    try:
+                        for o in a:
+                            k = o.split('*')
+                            t.append(k[0].strip())
+                            d.append(k[1])
+                    except Exception:
+                        pass
+                    t.pop(-1)
+                    print(dict(zip(t,d)))
+                    i.order_item_name = list(zip(t,d))
+                    i.order_item_size = d
+
+            data = {'username': u.username,
+                    'active_orders': active_orders
+                    }
+            return render(request, 'authentification_app/user_active_orders.html', data)
+
+
+def user_finished_orders(request):
+    u = request.user
+    if u.is_authenticated:
+        if u.is_active:
+            finished_orders = []
+            for i in Order.objects.filter(username=u.username):
+                if i.is_active == False:
+                    finished_orders.append(i)
+            finished_orders.reverse()
+            for i in finished_orders:
+                if i.order_item_size == 'watch item name column':
+                    a = i.order_item_name
+                    a = a.split(',')
+                    print(a)
+                    t = []
+                    d = []
+                    try:
+                        for o in a:
+                            k = o.split('*')
+                            t.append(k[0].strip())
+                            d.append(k[1])
+                    except Exception:
+                        pass
+                    t.pop(-1)
+                    print(dict(zip(t,d)))
+                    i.order_item_name = list(zip(t,d))
+                    i.order_item_size = d
+
+            data = {'username': u.username,
+                    'finished_orders': finished_orders
+                    }
+            return render(request, 'authentification_app/user_finished_orders.html', data)
+
+
+
 
 
 # # Вариант с формочкой

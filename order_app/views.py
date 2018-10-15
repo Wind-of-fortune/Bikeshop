@@ -7,14 +7,21 @@ from django.utils import timezone
 from order_app.models import *
 from order_app.order_app_view_functions import *
 
+class OrderNotes(): # I don't know how it would work with many users in the same time when they ordering
+    item_id = ''    # diferent items. We should test this
+    order_id = ''
+    item = ''
+
+    items_order_all = ''
+    price_all = ''
+
+
 def basket(request):
     pressed=''
     try:
         pressed = request.get_full_path()
-        print('PRESSED-0 ---', pressed)
         pressed = pressed.split('del')
         pressed = int(pressed[-1])
-        print('PRESSED ---', pressed)
     except Exception as e:
         print('EXCEPTION ---', e)
 
@@ -62,16 +69,11 @@ def basket(request):
             for i in order_id:
                 o = Basket.objects.get(pk=i)
                 orders.append(o)
-            print(orders)
 
             data = {'username': u.username, 'orders': orders,}
             return render(request, 'order_app/basket.html', data)
     return HttpResponse('Проблема с авторизацией')
 
-
-class OrderNotes():
-    item_id = ''
-    order_id = ''
 
 def make_order(request):
     if request.method == 'POST':
@@ -84,8 +86,11 @@ def make_order(request):
                 house = request.POST.get('house')
                 postcode = request.POST.get('postcode')
                 phone = request.POST.get('phone')
+                errors = valid_data_from_user(country,city,street,house,postcode,phone) # check user data
+                if len(errors) > 0:
+                    data = {'username': u.username, 'item': OrderNotes.item, 'errors': errors}
+                    return render(request, 'order_app/order_notes.html', data)
                 try:
-                    print('OrderNotes.item_id  --- ', OrderNotes.item_id)
                     item = Basket.objects.get(id=OrderNotes.item_id)
                     item.mark = 'to_delete'
                     item.save()
@@ -123,6 +128,7 @@ def make_order(request):
         if u.is_authenticated:
             if u.is_active:
                 item = Basket.objects.get(id=pressed)
+                OrderNotes.item = item
                 OrderNotes.item_id = pressed
                 data = {'username': u.username, 'item': item,}
                 return render(request, 'order_app/order_notes.html', data)
@@ -180,7 +186,7 @@ def submit_order(request):
         this_order.is_accept = True
         this_order.add_information = 'check order data and approve order or contact with order person'
 
-        delete_from_basket(u) # delete ordered thing from user basket
+        delete_from_basket(u, this_order) # delete ordered thing from user basket
         update_storage(this_order.order_item_name, this_order.order_item_size)
 
         this_order.save()
@@ -196,17 +202,82 @@ def submit_order(request):
             this_order.is_accept = True
             this_order.add_information = 'check order data and approve order or contact with order person'
 
-            delete_from_basket(u)  # delete ordered thing from user basket
+            delete_from_basket(u, this_order)  # delete ordered thing from user basket
             update_storage(this_order.order_item_name, this_order.order_item_size)
             u.money = u.money - this_order.sum_price
             u.save()
-
+            this_order.is_paid = True
             this_order.save()
-
 
             return render(request, 'order_app/finish_order.html', data)
 
 
 def make_order_all(request):
-    pass
+    if request.method == 'POST':
+        u = request.user
+        if u.is_authenticated:
+            if u.is_active:
+                for i in Basket.objects.all():
+                    if i.username == u.username:
+                        country = request.POST.get('country')
+                        city = request.POST.get('city')
+                        street = request.POST.get('street')
+                        house = request.POST.get('house')
+                        postcode = request.POST.get('postcode')
+                        phone = request.POST.get('phone')
+                        errors = valid_data_from_user(country, city, street, house, postcode, phone)  # check user data
+                        if len(errors) > 0:
+                            data = {'username': u.username, 'items': OrderNotes.items_order_all,
+                                    'price_all': OrderNotes.price_all, 'errors': errors}
+                            return render(request, 'order_app/order_notes.html', data)
+                        try:
+                            print('OrderNotes.item_id  --- ', OrderNotes.item_id)
+                            items, sizes, prices, sum_prices = ['', '', '', 0]
+                            for i in Basket.objects.all():
+                                if i.username == u.username:
+                                    basket_item = i
+                                    basket_item.mark = 'to delete'
+                                    basket_item.save()
+                                    items += i.item_name + '*' + i.item_size + ', '
+                                    sizes = 'watch item name column'
+                                    prices += str(i.item_price) + ' + '
+                                    sum_prices += i.item_price
+
+                            order = Order(username=u.username,
+                                          order_item_name=items,
+                                          order_item_size=sizes,
+                                          items_price=prices,
+                                          sum_price=sum_prices,
+                                          ship_country=country,
+                                          ship_city=city,
+                                          ship_street=street,
+                                          ship_house=house,
+                                          ship_postalcode=postcode,
+                                          contact_phone=phone,
+                                          )
+                            order.save()
+                            data = {'username': order.username, 'order': order}
+                            return render(request, 'order_app/order_notes2.html', data)
+                        except Exception as e:
+                            return HttpResponse('There is no that item in the basket', e)
+        return HttpResponse('Post Order all mistake')
+
+    u = request.user
+    delete_not_accept_orders(u) # cleaning not ending orders
+    data = {'username': u.username}
+    if u.is_authenticated:
+        if u.is_active:
+            items = []
+            price_all = 0
+            for i in Basket.objects.all():
+                if i.username == u.username:
+                    items.append(i)
+                    price_all += i.item_price
+            OrderNotes.items_order_all = items
+            OrderNotes.price_all = price_all
+            data = {'username': u.username, 'items': items, 'price_all': price_all}
+            return render(request, 'order_app/order_notes.html', data)
+    return HttpResponse('GET Order all mistake')
+
+
 

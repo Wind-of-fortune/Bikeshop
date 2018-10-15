@@ -85,18 +85,32 @@
 
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
-            <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Активных заказов  -  0 <h4></p> 
+            <div class="col-4"></div>
+
+            <a href="{% url 'authentification_app:user_active_orders' %}">
+            <button type="button" class="btn btn-light"  type="button"  id="active" name="active"> 
+            <div class="col">    
+              <p class="text-center"> <h4 class="text-dark"> Активных заказов  -  {{ active_orders|length }} </h4></p> 
             </div>
+            </button>
+            </a>
+
             <div class="col"></div>
           </div>
       </div>
 
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
-            <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Завершенных заказов  -  0 <h4></p> 
+            <div class="col-4"></div>
+
+            <a href="{% url 'authentification_app:user_finished_orders' %}">
+            <button type="button" class="btn btn-light"  type="button" id="finished" name="finished"> 
+               <div class="col">  
+               <p class="text-center"> <h4 class="text-dark"> Завершенных заказов  -  {{ finished_orders|length }} </h4></p>   
             </div>
+            </button>
+            </a>
+
             <div class="col"></div>
           </div>
       </div>

@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
 
 from authentification_app.models import AllUsers
+from order_app.models import *
 
 # Валидация
 def user_registration_valid (username, first_name, last_name, email, password, password2):
@@ -78,3 +79,12 @@ def user_password_valid (password, password2):
 
     return errors
 
+def user_orders(user):
+    active_orders = []
+    finished_orders = []
+    for i in Order.objects.filter(username=user.username):
+        if i.is_active == True:
+            active_orders.append(i)
+        if i.is_active == False:
+            finished_orders.append(i)
+    return active_orders, finished_orders

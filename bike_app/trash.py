@@ -1,17 +1,7 @@
-import uuid
 
-from django.core.mail import send_mail
+string = 'zaskar elite 2018*M, zaskar comp 2018*M, x-vert expert 2018*L, '
+another_string = 'zaskar elite 2018'
 
-def email_for_registration():
-    code_for_registration = str(uuid.uuid4())
-    send_mail(
-        'Здравствуйте!!!',
+k = string.find('*')
 
-        'Вас приветствует магазин BikeShop, код для продолжения регистрации {}, '
-        'если вы у нас не регистрировались, '
-        'то просто игнорируйте это сообщение'.format(code_for_registration),
-
-        'Wind-of-fortune2@yandex.ru',
-        ['Wind-of-fortune2@yandex.ru'],
-        fail_silently=False,
-    )
+print(k)
