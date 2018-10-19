@@ -5,9 +5,7 @@
 
 {% block content %}
 
-
       {% if err %}
-
 
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
@@ -32,26 +30,17 @@
           </div>
       </div>
 
-
-
-
-
       {% else %}
-
 
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
             <div class="col"></div>
             <div class="col"> 
-              
                 <p class="text-center"> <img src="{% static 'authentification_app/welcome.png' %}" height="175">  </p>
-             
             </div>
             <div class="col"></div>
           </div>
       </div>
-
-
 
 
       <div class="p-2 mb-0 bg-light text-white">
@@ -67,9 +56,7 @@
 
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
-            <div class="col">
-              <img height="30"> 
-            </div>  
+            <div class="col"><img height="30"> </div>  
           </div>
       </div>
 
@@ -77,8 +64,7 @@
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
             <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Баланс вашего счета  -    {{ money }} ₽  <h4></p> 
-            </div>
+            <div class="col">  <p class="text-center"> <h4 class="text-dark"> Баланс вашего счета  -    {{ money }} ₽  <h4></p> </div>
             <div class="col"></div>
           </div>
       </div>
@@ -119,27 +105,23 @@
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
             <div class="col"></div>
-            <div class="col">  <p class="text-center"> <h4 class="text-dark"> <h4></p> 
-            </div>
+            <div class="col">  <p class="text-center"> <h4 class="text-dark"> <h4></p> </div>
             <div class="col"></div>
           </div>
       </div>
 
 
-
         {% if error %}
+
               <div class="p-2 mb-0 bg-light text-dark">
                 <div class="row">
                   <div class="col"></div>
-                  <div class="col"> 
-                    <p class="text-center"> <h2 class="text-danger "> {{ error }}  </h2></p>  
-                  </div>
+                  <div class="col"> <p class="text-center"> <h2 class="text-danger "> {{ error }}  </h2></p>  </div>
                   <div class="col"></div>
                 </div>
             </div>
+
         {% endif %}
-
-
 
 
       <div class="p-2 mb-0 bg-light text-white">
@@ -216,8 +198,6 @@
       </div>
 
 
+  {% endif %}
 
-      {% endif %}
-
-
-    {% endblock %}
+{% endblock %}

@@ -24,7 +24,7 @@
       </div>
 
 {% if items %}
-    {% for i in items %}
+  {% for i in items %}
         <div class="p-2 mb-0 bg-light text-dark">
           <div class="row">
             <div class="col"></div>
@@ -33,7 +33,7 @@
             <div class="col"></div>
           </div>
       </div>
-    {% endfor %}
+  {% endfor %}
     {% if items|length > 1 %}
     <div class="p-2 mb-0 bg-light text-dark">
           <div class="row">
@@ -44,7 +44,7 @@
           </div>
       </div>
       {% endif %}
-{% else %}
+  {% else %}
 
       <div class="p-2 mb-0 bg-light text-dark">
           <div class="row">
@@ -88,7 +88,7 @@
             <div class="col"></div>
             <div class="col">    
 
-{% if items %}
+  {% if items %}
 
                <form action= "{% url 'order_app:make_order_all' %}" method="post" >
                 {% csrf_token %}
@@ -125,7 +125,7 @@
             <div class="col"></div>
           </div>
       </div>
-{% else %}
+  {% else %}
 
            <form action= "{% url 'order_app:make_order' %}" method="post" >
                 {% csrf_token %}
@@ -162,8 +162,8 @@
             <div class="col"></div>
           </div>
       </div>
-{% endif %}
+  {% endif %}
 
-    {% endblock %}
+{% endblock %}
 
 

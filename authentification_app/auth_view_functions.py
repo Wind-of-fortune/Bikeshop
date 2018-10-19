@@ -1,10 +1,7 @@
-import uuid
 
 from django.core.validators import validate_email
-from django.core.mail import send_mail
 from django.core.exceptions import ValidationError
 
-from authentification_app.models import AllUsers
 from order_app.models import *
 
 # Валидация
@@ -25,8 +22,6 @@ def user_registration_valid (username, first_name, last_name, email, password, p
             errors.append('Извините, но пользователь с таким именем уже существует')
     except Exception as e:
         print('Username Error --- ', e)
-
-
 
     try:
         if username == '':
@@ -79,6 +74,7 @@ def user_password_valid (password, password2):
 
     return errors
 
+
 def user_orders(user):
     active_orders = []
     finished_orders = []
@@ -88,3 +84,24 @@ def user_orders(user):
         if i.is_active == False:
             finished_orders.append(i)
     return active_orders, finished_orders
+
+
+def change_orders_view(orders):
+    for i in orders:
+        if i.order_item_size == 'watch item name column':
+            a = i.order_item_name
+            a = a.split(',')
+            t = []
+            d = []
+            try:
+                for o in a:
+                    k = o.split('*')
+                    t.append(k[0].strip())
+                    d.append(k[1])
+            except Exception:
+                pass
+            t.pop(-1)
+            i.order_item_name = list(zip(t, d))
+            i.order_item_size = d
+
+

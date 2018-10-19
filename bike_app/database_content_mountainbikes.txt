@@ -1,18 +1,18 @@
 from bike_app.models import *
 
-a = MountBikes(name="argus comp 2018", brand="Mongoose", year=2018, fake_price=51600, price=51600, img_link="argus comp 2018.jpg")
+a = MountBikes(name="argus comp 2018", brand="Mongoose", year=2018, fake_price=51600, price=51600, img_link="argus comp 2018.jpg", bike_type="mountbike")
 
-b = MountBikes(name="zaskar comp 2018", brand="GT", year=2018, fake_price=63200, price=63200, img_link="zaskar comp 2018.jpg")
+b = MountBikes(name="zaskar comp 2018", brand="GT", year=2018, fake_price=63200, price=63200, img_link="zaskar comp 2018.jpg", bike_type="mountbike")
 
-c = MountBikes(name="zaskar elite 2018", brand="GT", year=2018, fake_price=79100, price=79100, img_link="zaskar elite 2018.jpg")
+c = MountBikes(name="zaskar elite 2018", brand="GT", year=2018, fake_price=99100, price=79100, img_link="zaskar elite 2018.jpg", bike_type="mountbike")
 
-d = MountBikes(name="x-vert motion 2017", brand="Corratec", year=2017, fake_price=34000, price=34000, img_link="x-vert motion 2017.jpg")
+d = MountBikes(name="x-vert motion 2017", brand="Corratec", year=2017, fake_price=34000, price=34000, img_link="x-vert motion 2017.jpg", bike_type="mountbike")
 
-e = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, fake_price=65500, price=65500, img_link="x-vert expert 2018.jpg")
+e = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, fake_price=77500, price=65500, img_link="x-vert expert 2018.jpg", bike_type="mountbike")
 
-f = MountBikes(name="dragon pro 2016", brand="Jamis", year=2016, fake_price=94000, price=94000, img_link="dragon pro 2016.jpg")
+f = MountBikes(name="dragon pro 2016", brand="Jamis", year=2016, fake_price=104000, price=94000, img_link="dragon pro 2016.jpg", bike_type="mountbike")
 
-g = MountBikes(name="eden race 2016", brand="Jamis", year=2016, fake_price=104000, price=104000, img_link="eden race 2016.jpg")
+g = MountBikes(name="eden race 2016", brand="Jamis", year=2016, fake_price=104000, price=104000, img_link="eden race 2016.jpg", bike_type="mountbike")
 
 a.save()
 b.save()
@@ -43,32 +43,55 @@ g1.save()
 
 
 
-from django.utils import timezone
 
 
 
+a = MountBikes(name="ALLROAD BASE 2018", brand="Corratec", year=2018, fake_price=71300, price=57000, img_link="ALLROAD BASE 2018.jpg", bike_type="roadbike")
+b = MountBikes(name="THRESHOLD A TIAGRA 2018", brand="Norco", year=2018, fake_price=70740, price=56590, img_link="THRESHOLD A TIAGRA 2018.jpg", bike_type="roadbike")
+c = MountBikes(name="TRACKWAY 2018", brand="Outleap", year=2018, fake_price=30600, price=29070, img_link="TRACKWAY 2018.jpg", bike_type="roadbike")
+d = MountBikes(name="GTS SPORT 2018", brand="GT", year=2018, fake_price=48960, price=36720, img_link="GTS SPORT 2018.jpg", bike_type="roadbike")
+
+a.save()
+b.save()
+c.save()
+d.save()
+
+
+a1 = MountBikesDescription(mountbikes=a, description="Это просто замечательный байк,он катит", frame="aluminium 6061", fork="карбоновая шток 1/8", crank="noname 50/34Т", wheels="formula wheelset", front_shifter="Shimano 2400", rear_shifter="Shimano 2400", front_brake="Tektro dual pivot", rear_brake="Tektro dual pivot", handlebar="aluminium 6061", seat = "Corratec")
+b1 = MountBikesDescription(mountbikes=b, description="Это просто замечательный байк,он катит", frame="aluminium 6061", fork="алюминиевая шток 1/8", crank="noname 50/34Т", wheels="formula wheelset", front_shifter="Shimano 2400", rear_shifter="Shimano 2400", front_brake="Tektro dual pivot", rear_brake="Tektro dual pivot", handlebar="aluminium 6061", seat = "Norco")
+c1 = MountBikesDescription(mountbikes=c, description="Это просто замечательный байк,он катит", frame="aluminium 6061", fork="карбоновая шток 1/8", crank="noname 50/34Т", wheels="formula wheelset", front_shifter="Shimano 2400", rear_shifter="Shimano 2400", front_brake="Tektro dual pivot", rear_brake="Tektro dual pivot", handlebar="aluminium 6061", seat = "Noname")
+d1 = MountBikesDescription(mountbikes=d, description="Это просто замечательный байк,он катит", frame="aluminium 6061", fork="карбоновая шток 1/8", crank="noname 50/34Т", wheels="formula wheelset", front_shifter="Shimano 2400", rear_shifter="Shimano 2400", front_brake="Tektro dual pivot", rear_brake="Tektro dual pivot", handlebar="aluminium 6061", seat = "GT")
+
+a1.save()
+b1.save()
+c1.save()
+d1.save()
 
 
 
+a = MountBikes(name="CURSE FS 20.25 2018", brand="WeThePeople", year=2018, fake_price=26460, price=19845, img_link="CURSE FS 20.25 2018.jpg", bike_type="bmx")
+b = MountBikes(name="DARKO 20.5 2018", brand="Radio", year=2018, fake_price=25800, price=19350, img_link="DARKO 20.5 2018.jpg", bike_type="bmx")
+c = MountBikes(name="ENVY 20.5 2018", brand="WeThePeople", year=2018, fake_price=44820, price=44820, img_link="ENVY 20.5 2018.jpg", bike_type="bmx")
+
+a.save()
+b.save()
+c.save()
+
+
+a1 = BMXBikesDescription(mountbikes=a, description="Это просто БМХ....", frame="4130", fork="WETHEPEOPLE Patron 100% ", crank="ECLAT ONYX", wheels="ECLAT", handlebar="SALTPLUS", seat = "ECLAT")
+b1 = BMXBikesDescription(mountbikes=b, description="Это просто БМХ....", frame="4130", fork="WETHEPEOPLE Patron 99% ", crank="ECLAT ONYX", wheels="ECLAT", handlebar="SALTPLUS", seat = "ECLAT")
+c1 = BMXBikesDescription(mountbikes=c, description="Это просто БМХ....", frame="4130", fork="WETHEPEOPLE Patron 98% ", crank="ECLAT ONYX", wheels="ECLAT", handlebar="SALTPLUS", seat = "ECLAT")
+
+a1.save()
+b1.save()
+c1.save()
 
 
 
+a = MountBikes(name="BEACH LADIES 7-SPEED 2018", brand="Nirve", year=2018, fake_price=27060, price=20295, img_link="BEACH LADIES 7-SPEED 2018.jpg", bike_type="citybike")
+b = MountBikes(name="CANNNIBAL 3-SPEED 2018", brand="Nirve", year=2018, fake_price=44760, price=33570, img_link="CANNNIBAL 3-SPEED 2018.jpg", bike_type="citybike")
 
 
+a1 = BMXBikesDescription(mountbikes=a, description="Это просто CITYBIKE....", frame="Nirve Twin-Tube Cruiser Design", fork="WETHEPEOPLE Patron 100% ", crank="ECLAT ONYX", wheels="ECLAT", handlebar="SALTPLUS", seat = "ECLAT")
 
 
-
-a = MountBikes(name="argus comp 2018", brand="Mongoose", year=2018, price=51600, date=timezone.now(), img_link="argus comp 2018.jpg", size='XS')
-b = MountBikes(name="argus comp 2018", brand="Mongoose", year=2018, price=51600, date=timezone.now(), img_link="argus comp 2018.jpg", size='M')
-c = MountBikes(name="argus comp 2018", brand="Mongoose", year=2018, price=51600, date=timezone.now(), img_link="argus comp 2018.jpg", size='L')
-d = MountBikes(name="zaskar comp 2018", brand="GT", year=2018, price=63200, date=timezone.now(), img_link="zaskar comp 2018.jpg", size='M')
-e = MountBikes(name="zaskar comp 2018", brand="GT", year=2018, price=63200, date=timezone.now(), img_link="zaskar comp 2018.jpg", size='XL')
-f = MountBikes(name="zaskar elite 2018", brand="GT", year=2018, price=79100, date=timezone.now(), img_link="zaskar elite 2018.jpg", size='L')
-g = MountBikes(name="x-vert motion 2017", brand="Corratec", year=2017, price=34000, date=timezone.now(), img_link="x-vert motion 2017.jpg", size='S')
-h = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, price=65500, date=timezone.now(), img_link="x-vert expert 2018.jpg", size='S')
-i = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, price=65500, date=timezone.now(), img_link="x-vert expert 2018.jpg", size='M')
-j = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, price=65500, date=timezone.now(), img_link="x-vert expert 2018.jpg", size='L')
-k = MountBikes(name="x-vert expert 2018", brand="Corratec", year=2018, price=65500, date=timezone.now(), img_link="x-vert expert 2018.jpg", size='XL')
-l = MountBikes(name="dragon pro 2016", brand="Jamis", year=2016, price=94000, date=timezone.now(), img_link="dragon pro 2016.jpg", size='M')
-m = MountBikes(name="dragon pro 2016", brand="Jamis", year=2016, price=94000, date=timezone.now(), img_link="dragon pro 2016.jpg", size='XL')
-n = MountBikes(name="eden race 2016", brand="Jamis", year=2016, price=104000, date=timezone.now(), img_link="eden race 2016.jpg", size='XS')

@@ -23,21 +23,26 @@
 
              
             <input class="btn btn-info" type="submit" value="В наличии" id="available"> 
- 
-
-        <div class="dropdown">
-          <button class="btn btn-info dropdown-toggle" type="button" id="size" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Размер рамы
-          </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item"  id="size_xs">XS</a>
-            <a class="dropdown-item"  id="size_s">S</a>
-            <a class="dropdown-item"  id="size_m">M</a>
-            <a class="dropdown-item"  id="size_l">L</a>
-            <a class="dropdown-item"  id="size_xl">XL</a>
-            <a class="dropdown-item"  id="size_all">ALL</a>
-          </div>
-        </div>
+  
+      {% for bike in bikes_1  %}
+          {% if forloop.first %}
+              {% if bike.bike_type == 'mountbike' or bike.bike_type == 'roadbike' %}
+              <div class="dropdown">
+                <button class="btn btn-info dropdown-toggle" type="button" id="size" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Размер рамы
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item"  id="size_xs">XS</a>
+                  <a class="dropdown-item"  id="size_s">S</a>
+                  <a class="dropdown-item"  id="size_m">M</a>
+                  <a class="dropdown-item"  id="size_l">L</a>
+                  <a class="dropdown-item"  id="size_xl">XL</a>
+                  <a class="dropdown-item"  id="size_all">ALL</a>
+                </div>
+              </div>
+              {% endif %}
+          {% endif %}
+      {% endfor %}
 
          
           <input class="btn btn-info" type="submit" value="Цена" id="price">
@@ -83,62 +88,98 @@
 </div>
 
 
-
-  <div class="p-1 mb-0 bg-light text-white" id='my_block'>
+ <div class="p-1 mb-0 bg-light text-white" id='my_block'>
       <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col">
+        <div class="col-1"></div>
+        <div class="col-1"></div>
+        <div class="col-3">
             {% for bike in bikes_1  %}
                 <p class="bikes_buttons" id="{{ bike.name }}">
                   <button type="button" class="btn btn-light"  type="submit" value="Submit" id="{{ bike.name }}">
-                      <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200">    
-                      <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
-                      {% if bike.discount > 0 %}
-                           <p class="text-center">   <div class="col">  Old Price - <strike> {{ bike.fake_price }}  ₽ </strike> </div>    </p>
-                           <p class="text-center">   <div class="col">  New Price - {{ bike.price }}  ₽ </div>    </p>
+                      {% if bike.bike_type == 'mountbike' %}
+                    <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
+                      {% endif %}
+
+                      {% if bike.bike_type == 'roadbike' %}
+                        <img src="{% static 'bike_app/bike_models/roadbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
+                      {% endif %}
+
+                      {% if bike.bike_type == 'bmx' %}
+                        <img src="{% static 'bike_app/bike_models/BMX/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
+                      {% endif %}   
+
+                      {% if bike.bike_type == 'city_bike' %}
+                        <img src="{% static 'bike_app/bike_models/Citybikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
+                      {% endif %}   
+
+                      {% if bike.bike_type == 'child_bike' %}
+                        <img src="{% static 'bike_app/bike_models/Kidsbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
+                      {% endif %} 
+
+                      <p class="text-center">  {{ bike.name }} </p>
+                      {% if bike.fake_price != bike.price  %}
+                           <p class="text-center"> Old Price - <strike> {{ bike.fake_price }}  ₽ </strike> </p>
+                           <p class="text-center"> New Price - {{ bike.price }}  ₽ </p>
 
                         {% else %}
-                      <p class="text-center">   <div class="col">  Price - {{ bike.price }}  ₽ </div>    </p> 
-                      <p class="text-center">   <div class="col">   </div>    </p> 
+                      <p class="text-center"> Price - {{ bike.price }}  ₽ </p> 
+                      <p class="text-center"> </p> 
                       {%endif%}
 
-                      {% if bike.available_XS > 0 or bike.available_S > 0 or bike.available_M > 0 or bike.available_L > 0 or bike.available_XL > 0 %}   
-                          <p class="text-center">   <div class="col">   </div>    </p>  
-                          <p class="text-center">   <div class="col">   </div>    </p> 
+                      {% if bike.available_XS > 0 or bike.available_S > 0 or bike.available_M > 0 or bike.available_L > 0 or bike.available_XL > 0 or bike.available_no_size > 0 %}    
+                          <p class="text-center"> </p>  
+                          <p class="text-center"> </p> 
                       {% else %}
-                          <p class="text-center">   <div class="col">  Нет в наличии </div>    </p>
+                          <p class="text-center"> Нет в наличии </p>
                       {%endif%}
                     
-                      <p class="text-center">   <div class="col">   </div>    </p>    
+                      <p class="text-center"> </p>    
                   </button>
                 </p>
             {% endfor %}
         </div>
-        <div class="col"></div>
-        <div class="col">
+        <div class="col-2"></div>
+        <div class="col-3">
             {% for bike in bikes_2  %}
               <p class="bikes_buttons" id="{{ bike.name }}">
                 <button type="button" class="btn btn-light"  type="submit" value="Submit" id="{{ bike.name }}">
+                  {% if bike.bike_type == 'mountbike' %}
                     <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
-                    <p class="text-center">   <div class="col"> {{ bike.brand }} {{ bike.name }} </div>    </p>
+                  {% endif %}
+
+                  {% if bike.bike_type == 'roadbike' %}
+                    <img src="{% static 'bike_app/bike_models/roadbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
+                  {% endif %}
+
+                  {% if bike.bike_type == 'bmx' %}
+                        <img src="{% static 'bike_app/bike_models/BMX/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
+                      {% endif %} 
+                  {% if bike.bike_type == 'city_bike' %}
+                        <img src="{% static 'bike_app/bike_models/Citybikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
+                      {% endif %}  
+
+                   {% if bike.bike_type == 'child_bike' %}
+                        <img src="{% static 'bike_app/bike_models/Kidsbikes/'  %}{{bike.img_link}}" class="img-fluid" alt="Responsive image" width="200" >  
+                      {% endif %} 
+
+                    <p class="text-center"> {{ bike.name }} </p>
                     
-                    {% if bike.discount > 0 %}
-                           <p class="text-center">   <div class="col">  Old Price - <strike> {{ bike.fake_price }}  ₽ </strike>   </div>    </p>
-                           <p class="text-center">   <div class="col">  New Price - {{ bike.price }}  ₽ </div>    </p>
+                    {% if bike.fake_price != bike.price %}
+                           <p class="text-center"> Old Price - <strike> {{ bike.fake_price }}  ₽ </strike> </p>
+                           <p class="text-center"> New Price - {{ bike.price }}  ₽ </p>
 
                         {% else %}
-                      <p class="text-center">   <div class="col">  Price - {{ bike.price }}  ₽ </div>    </p> 
-                      <p class="text-center">   <div class="col">   </div>    </p> 
+                      <p class="text-center"> Price - {{ bike.price }}  ₽ </p> 
+                      <p class="text-center"></p> 
                       {%endif%}
 
-                    {% if bike.available_XS > 0 or bike.available_S > 0 or bike.available_M > 0 or bike.available_L > 0 or bike.available_XL > 0 %}                                  
-                        <p class="text-center">   <div class="col">   </div>    </p>  
-
+                    {% if bike.available_XS > 0 or bike.available_S > 0 or bike.available_M > 0 or bike.available_L > 0 or bike.available_XL > 0 or bike.available_no_size > 0 %}                                  
+                        <p class="text-center">  </p>  
+                        <p class="text-center">  </p> 
                     {% else %}
-                        <p class="text-center">   <div class="col">  Нет в наличии </div>    </p>
+                        <p class="text-center"> Нет в наличии  </p>
                     {%endif%}
-                    <p class="text-center">   <div class="col">   </div>    </p>   
+                    <p class="text-center"> </p>   
                 </button>
               </p>
             {% endfor %}
@@ -148,11 +189,10 @@
             {% endif %}
 
         </div>
-        <div class="col"></div>
-        <div class="col"></div>
+        <div class="col-1"></div>
+        <div class="col-1"></div>
       </div>
   </div>
-     
 
 <script type="application/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
 
@@ -269,7 +309,37 @@
             param = ''
           }
 
-          new_link = 'http://127.0.0.1:8000/bike/mountbike/'+ param
+          {% for bike in bikes_1  %}
+              {% if bike.bike_type == 'mountbike' %}
+                  new_link = 'http://127.0.0.1:8000/bike/mountbike/'+ param
+              {% endif %}
+          {% endfor %}
+              
+          {% for bike in bikes_1  %}
+              {% if bike.bike_type == 'roadbike' %}
+                  new_link = 'http://127.0.0.1:8000/bike/roadbike/'+ param
+              {% endif %}
+          {% endfor %}
+
+          {% for bike in bikes_1  %}
+              {% if bike.bike_type == 'bmx' %}
+                  new_link = 'http://127.0.0.1:8000/bike/bmxbike/'+ param
+              {% endif %}
+          {% endfor %}
+
+          {% for bike in bikes_1  %}
+              {% if bike.bike_type == 'city_bike' %}
+                  new_link = 'http://127.0.0.1:8000/bike/citybike/'+ param
+              {% endif %}
+          {% endfor %}
+
+          {% for bike in bikes_1  %}
+              {% if bike.bike_type == 'child_bike' %}
+                  new_link = 'http://127.0.0.1:8000/bike/kidsbike/'+ param
+              {% endif %}
+          {% endfor %}
+
+
 
             var request = $.ajax({
                 type:'get',
@@ -431,28 +501,6 @@
         })
 
 
-        
-          // function loadNewPage(bike_name) {
-            //var previous_page = {'bike_name': bike_name, 'previous_page': window.location.href} 
-            // var my_url = 'http://127.0.0.1:8000/bike/mountbike/name' + '?' + bike_name
-
-            // var request = $.ajax({
-            //     type:'get',
-            //     url: my_url,
-            //     crossDomain: true,
-            //     data: previous_page,
-            //     success: function(){  
-            //     console.log('success')
-            //   }
-            // });
-            
-            // request.done(function (data) {
-            //     window.location.href = my_url;
-            // })
-            
-
-        // }
-
 
         var elems = document.querySelectorAll('.bikes_buttons');
 
@@ -472,13 +520,75 @@
            
            str_link = '?' + str_link
 
+          {% for bike in bikes_1  %}
+              {% if bike.bike_type == 'mountbike' %}
 
-           if (str_link == ''){
+               if (str_link == ''){
               window.location.href = 'http://127.0.0.1:8000/bike/mountbike/name/' + '?' + '*' + event.currentTarget.id;
            } else{
               window.location.href = 'http://127.0.0.1:8000/bike/mountbike/name/' + str_link + '*' + event.currentTarget.id;
            }
-     
+                  
+
+              {% endif %}
+          {% endfor %}
+              
+          {% for bike in bikes_1  %}
+              {% if bike.bike_type == 'roadbike' %}
+               
+                if (str_link == ''){
+              window.location.href = 'http://127.0.0.1:8000/bike/roadbike/name/' + '?' + '*' + event.currentTarget.id;
+           } else{
+              window.location.href = 'http://127.0.0.1:8000/bike/roadbike/name/' + str_link + '*' + event.currentTarget.id;
+           }
+
+              {% endif %}
+          {% endfor %}
+
+
+          {% for bike in bikes_1  %}
+              {% if bike.bike_type == 'bmx' %}
+      
+                if (str_link == ''){
+              window.location.href = 'http://127.0.0.1:8000/bike/bmxbike/name/' + '?' + '*' + event.currentTarget.id;
+           } else{
+              window.location.href = 'http://127.0.0.1:8000/bike/bmxbike/name/' + str_link + '*' + event.currentTarget.id;
+           }
+
+              {% endif %}
+          {% endfor %}
+
+
+          {% for bike in bikes_1  %}
+              {% if bike.bike_type == 'city_bike' %}
+      
+                if (str_link == ''){
+              window.location.href = 'http://127.0.0.1:8000/bike/citybike/name/' + '?' + '*' + event.currentTarget.id;
+           } else{
+              window.location.href = 'http://127.0.0.1:8000/bike/citybike/name/' + str_link + '*' + event.currentTarget.id;
+           }
+
+              {% endif %}
+          {% endfor %}
+
+
+
+
+        {% for bike in bikes_1  %}
+              {% if bike.bike_type == 'child_bike' %}
+      
+                if (str_link == ''){
+              window.location.href = 'http://127.0.0.1:8000/bike/kidsbike/name/' + '?' + '*' + event.currentTarget.id;
+           } else{
+              window.location.href = 'http://127.0.0.1:8000/bike/kidsbike/name/' + str_link + '*' + event.currentTarget.id;
+           }
+
+              {% endif %}
+          {% endfor %}
+
+
+
+
             })
         }
     })(window, document, jQuery);

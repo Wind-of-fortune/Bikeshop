@@ -75,8 +75,8 @@ def brand_filter(querylist):
 
     return bikes
 
-def size_filter(size):
-    querylist = MountBikes.objects.all()
+def size_filter_mountbike(size):
+    querylist = MountBikes.objects.filter(bike_type='mountbike')
     bikes = []
 
     if size == 'xs':
@@ -109,6 +109,41 @@ def size_filter(size):
                 bikes.append(i)
         return bikes
 
+def size_filter_roadbike(size):
+    querylist = MountBikes.objects.filter(bike_type='roadbike')
+    bikes = []
+
+    if size == 'xs':
+        for i in querylist:
+            if i.available_XS > 0:
+                bikes.append(i)
+        return bikes
+
+    if size == 'ss':
+        for i in querylist:
+            if i.available_S > 0:
+                bikes.append(i)
+        return bikes
+
+    if size == 'mm':
+        for i in querylist:
+            if i.available_M > 0:
+                bikes.append(i)
+        return bikes
+
+    if size == 'll':
+        for i in querylist:
+            if i.available_L > 0:
+                bikes.append(i)
+        return bikes
+
+    if size == 'xl':
+        for i in querylist:
+            if i.available_XL > 0:
+                bikes.append(i)
+        return bikes
+
+
 def price_min_max(querylist, price_min, price_max):
     bikes = []
     for i in querylist:
@@ -119,8 +154,17 @@ def price_min_max(querylist, price_min, price_max):
 
 # Функция - костыль для парсинга url и взятия из него нужных параметров
 def get_bike_name_and_last_page_url(mountbike_path, mountbike_uri):
+    bike_name = None
 
-    bike_name = mountbike_path.replace('/bike/mountbike/name/?', '')
+    if mountbike_path.find('mountbike'):
+        bike_name = mountbike_path.replace('/bike/mountbike/name/?', '')
+
+    if mountbike_path.find('roadbike'):
+        bike_name = mountbike_path.replace('/bike/roadbike/name/?', '')
+
+    if mountbike_path.find('bmxbike'):
+        bike_name = mountbike_path.replace('/bike/bmxbike/name/?', '')
+
     bike_string = bike_name.split('*')
     bike_name = bike_string[1]
     bike_name = bike_name.replace('%20', ' ')
@@ -156,16 +200,35 @@ def size_string(this_bike):
     if this_bike.mountbikes.available_XL > 0:
         new_sizes += '  XL'
     if new_sizes == '':
-        new_sizes = 'Товара нет в наличие'
+        new_sizes = 'Товара нет в наличии'
 
     return new_sizes
 
 def size_list(new_sizes):
     size_list = []
-    if new_sizes != 'Товара нет в наличие':
+    if new_sizes != 'Товара нет в наличии':
         sl = new_sizes.split(' ')
         for i in range(len(sl)):
             if sl[i] != '':
                 size_list.append(sl[i])
 
     return size_list
+
+
+def menu_filter_size_mountbike (size):
+    if size == 'xs' or size == 'ss' or size == 'mm' or size == 'll' or size == 'xl':
+        bikes = size_filter_mountbike(size)
+        return bikes
+
+
+def ident_bike_type(path):
+    if path.find('mountbike') != -1:
+        return 'mountbike'
+    if path.find('roadbike') != -1:
+        return 'roadbike'
+    if path.find('bmx') != -1:
+        return 'bmx'
+    if path.find('citybike') != -1:
+        return 'city_bike'
+    if path.find('kidsbike') != -1:
+        return 'child_bike'

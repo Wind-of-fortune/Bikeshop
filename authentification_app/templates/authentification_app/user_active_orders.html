@@ -5,14 +5,10 @@
 
 {% block content %}
 
-
-
       <div class="p-2 mb-0 bg-light text-white">
           <div class="row">
             <div class="col"></div>
-            <div class="col"> 
-              <p class="text-center"> <h2 class="text-dark"> Ваши активные заказы:  </h2></p>  
-            </div>
+            <div class="col"> <p class="text-center"> <h2 class="text-dark"> Ваши активные заказы:  </h2></p> </div>
             <div class="col"></div>
           </div>
       </div>
@@ -29,11 +25,10 @@
 
       <div class="p-2 mb-0 bg-light text-dark">
             <div class="row">
-            <div class="col-1"></div>
 
             <div class="col-2"> <p class="text-center"> <h5 class="text-dark"> Номер заказа:  </h5></p>  </div>
             
-            <div class="col-3">  <p class="text-center"> <h5 class="text-dark"> Предмет:  </h5></p> </div>
+            <div class="col-2">  <p class="text-center"> <h5 class="text-dark"> Предмет:  </h5></p> </div>
 
             <div class="col-1"> <p class="text-center"> <h5 class="text-dark">  Размер:  </h5></p> </div>
 
@@ -42,8 +37,9 @@
             <div class="col-2">    <p class="text-center"> <h5 class="text-dark">  Дата создания:  </h5></p> </div>
 
             <div class="col-1">    <p class="text-center"> <h5 class="text-dark">  Оплачен:  </h5></p> </div>
+
+            <div class="col-2">    <p class="text-center"> <h5 class="text-dark">  Получен:  </h5></p> </div>
           
-            <div class="col-1"></div>
             </div>
       </div>
 
@@ -56,18 +52,16 @@
     
      </div>
 
-  {% if i.order_item_name|length < 5 %}
+  {% if i.order_item_name|length < 20 %}
     {% for k,m in i.order_item_name %}
       {% if forloop.counter > 1 %}
 
       <div class="p-2 mb-0 bg-light text-dark">
             <div class="row">
-            <div class="col-1"></div>
-
     
             <div class="col-2">  <p class="text-center"> <p class="text-dark">  </p></p> </div>
 
-            <div class="col-3">  <p class="text-center"> <p class="text-dark"> {{ k }} </p></p> </div>
+            <div class="col-2">  <p class="text-center"> <p class="text-dark"> {{ k }} </p></p> </div>
             
             <div class="col-1"> <p class="text-center"> <p class="text-dark"> {{ m }} </p></p> </div>
 
@@ -77,7 +71,8 @@
 
             <div class="col-1"> <p class="text-center"> <p class="text-dark"> </p></p> </div>
             
-            <div class="col-1"></div>
+            <div class="col-2"> <p class="text-center"> <p class="text-dark"> </p></p> </div>
+
             </div>
       </div>
 
@@ -85,11 +80,10 @@
 
       <div class="p-2 mb-0 bg-light text-dark">
             <div class="row">
-            <div class="col-1"></div>
 
             <div class="col-2">  <p class="text-center"> <p class="text-dark"> № {{ i.id }} </p></p> </div>
 
-            <div class="col-3"> <p class="text-center"> <p class="text-dark"> {{ k }} </p></p> </div>
+            <div class="col-2"> <p class="text-center"> <p class="text-dark"> {{ k }} </p></p> </div>
           
             <div class="col-1"> <p class="text-center"> <p class="text-dark"> {{ m }} </p></p> </div>
 
@@ -102,8 +96,11 @@
             {% else %}
             <div class="col-1">  <p class="text-center"> <p class="text-dark"> НЕТ </p></p> </div>
             {% endif %}
-            
-            <div class="col-1"></div>
+
+            <button type="button" class="btn btn-light"  type="button" id="{{ i.id }}" name="{{ i.id }}">
+              <div class="col-2"> <p class="text-center"> <p class="text-dark"> Я получил заказ </p></p> </div>
+            </button>
+
             </div>
         </div>
         {% endif %}
@@ -112,12 +109,10 @@
 
       <div class="p-2 mb-0 bg-light text-dark">
           <div class="row">
-            <div class="col-1"></div>
-
     
             <div class="col-2"> <p class="text-center"> <p class="text-dark"> № {{ i.id }} </p></p> </div>
 
-            <div class="col-3"> <p class="text-center"> <p class="text-dark"> {{ i.order_item_name }} </p></p> </div>
+            <div class="col-2"> <p class="text-center"> <p class="text-dark"> {{ i.order_item_name }} </p></p> </div>
 
             <div class="col-1"> <p class="text-center"> <p class="text-dark"> {{ i.order_item_size }} </p></p> </div>
 
@@ -131,7 +126,10 @@
             <div class="col-1">  <p class="text-center"> <p class="text-dark"> НЕТ </p></p> </div>
             {% endif %}
             
-            <div class="col-1"></div>
+            <button type="button" class="btn btn-light"  type="button" id="{{ i.id }}" name="{{ i.id }}">
+              <div class="col-2"> <p class="text-center"> <p class="text-dark"> Я получил заказ </p></p> </div>
+            </button>
+
           </div>
       </div>
   {% endif %}
@@ -149,4 +147,36 @@
 
 
 
-    {% endblock %}
+<script type="application/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
+
+<script type="application/javascript">
+    (function (window, document, $) {
+         
+            document.addEventListener('DOMContentLoaded', function () {
+            var control = document.getElementsByClassName('btn btn-light'); 
+
+            if (control.length == 1){
+              control[0].addEventListener("click",function (event) { 
+                if (control[0].className =='btn btn-light') {
+                      window.location.href = ("{% url 'authentification_app:user_active_orders' %}" + '?' + control[0].id)
+                         }
+                })
+            }
+
+
+           for (var i = 0; i < control.length - 1; i++) {
+              event.target.addEventListener("click",function (event) { 
+                if (event.target.className =='btn btn-light') {
+                      window.location.href = ("{% url 'authentification_app:user_active_orders' %}" + '?' + event.target.id)
+              }
+            })
+          }
+
+
+       })
+
+    })(window, document, jQuery);
+</script>
+
+
+{% endblock %}

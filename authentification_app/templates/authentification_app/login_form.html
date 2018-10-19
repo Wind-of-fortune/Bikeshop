@@ -6,7 +6,7 @@
 
 <a href="{% url 'authentification_app:login' %}"> 
 <button type="button" class="btn btn-info"  type="submit" value="Submit">    
-          <p class="text-center">   <div class="col"> ВХОД В ЛИЧНЫЙ КАБИНЕТ </div>    </p>    </button>
+          <p class="text-center">   <div class="col"> ЛИЧНЫЙ КАБИНЕТ </div> </p>    </button>
 </a>
 
 <a href="{% url 'authentification_app:logout' %}"> 
@@ -55,63 +55,6 @@
 </form>
 
 {% endif %}
-
-<!-- <script type="application/javascript" src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
-
-<script type="application/javascript">
-    (function (window, document, $) {
-
-        var login_data = {'email':'', 'password':''};
-		console.log('11111')
-
-        function sendRequest(d, t) {
-            var my_link = "{% url 'authentification_app:login' %}"
-            console.log(d, t.value)
-
-            $.ajaxSetup({
-			  headers: { "X-CSRFToken": '{{csrf_token}}' }
-			});
-
-
-            var request = $.ajax({
-	            type:'post',
-	     //        beforeSend: function(request) {
-				  //   request.setRequestHeader("X-CSRF-Token", t.value);
-				  // },
-	            url: my_link,
-	            crossDomain: true,
-	            data: d
-	        })
-	        request.done(function(info) {
-				console.log(info)
-
-				if (info.success === true) {
-					console.log('22')
-				}
-
-			});
-			 request.fail(function(info) {
-				console.log('request - fail')
-			});
-		}
-	    document.addEventListener('DOMContentLoaded', function () {
-	        var control = document.getElementById('OK');
-	        var email = document.getElementById('email');
-	        var token = document.getElementsByName('csrfmiddlewaretoken')[0]
-        	var password = document.getElementById('password');
-
-            control.addEventListener('click', function (event) {
-            	login_data['email'] = email.value;
-            	login_data['password'] = password.value;
-                sendRequest(login_data, token)
-	                	
-	        })
-	     })
-    })(window, document, jQuery); 
-</script>
-
- -->
-
 
 {% endblock %}
 

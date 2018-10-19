@@ -1,14 +1,14 @@
 
 from order_app.models import *
 
+
 def delete_not_accept_orders(user):
     if user.is_authenticated:
         if user.is_active:
             delete_not_accept = []
-            for i in Order.objects.all():
-                if i.username == user.username:
-                    if i.is_accept == False:
-                        delete_not_accept.append(i.pk)
+            for i in Order.objects.filter(username=user.username):
+                if i.is_accept == False:
+                    delete_not_accept.append(i.pk)
             for i in delete_not_accept:
                 o = Order.objects.get(id=i)
                 o.delete()
@@ -16,38 +16,37 @@ def delete_not_accept_orders(user):
 
 def delete_from_basket(user, order): # delete ordered thing from user basket
     basket_item_to_delete = ''
-    k = order.order_item_name.find('*')
+    k = order.order_item_name.find('*') # check is items list contains from one thing or from many
     if k != -1:
         print('order.order_item_name', order.order_item_name)
         iter = 0
-        for i in Basket.objects.all():
-            if i.username == user.username:
-                iter += 1
+        for i in Basket.objects.filter(username=user.username):
+            iter += 1
 
         for j in range(iter):
-            for i in Basket.objects.all():
-                if i.username == user.username:
-                    basket_item_to_delete = i
+            for i in Basket.objects.filter(username=user.username):
+                basket_item_to_delete = i
             basket_item_to_delete.delete()
     else:
-        for i in Basket.objects.all():
-            if i.username == user.username:
-                if i.mark == 'to_delete':
-                    basket_item_to_delete = i
+        for i in Basket.objects.filter(username=user.username):
+            if i.mark == 'to_delete':
+                basket_item_to_delete = i
         basket_item_to_delete.delete()
 
 
 def delete_all_todelete_from_basket(user): # delete all  marks 'to_delete'
-    for i in Basket.objects.all():
-        if i.username == user.username:
-            if i.mark == 'to_delete':
-                k = i
-                k.mark = ''
-                k.save()
+    for i in Basket.objects.filter(username=user.username):
+         if i.mark == 'to_delete':
+             k = i
+             k.mark = ''
+             k.save()
 
 def update_storage_dop(name, size):
-
     b = MountBikes.objects.get(name=name)
+
+    if size == '':
+        b.available_no_size = b.available_no_size - 1
+        b.save()
 
     if size == 'XS':
         b.available_XS = b.available_XS -1
@@ -70,6 +69,7 @@ def update_storage_dop(name, size):
         b.save()
 
 def update_storage(name, size): # update storage after ordering
+
     if size == 'watch item name column':
         a = name.split(',')
         bikes = []
@@ -126,4 +126,7 @@ def valid_data_from_user(country,city,street,house,postcode,phone):
         error_list.append('Проверьте ваш контактный телефон, вы ошиблись')
 
     return error_list
+
+
+
 

@@ -16,10 +16,10 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="{% url 'bike:mountbike' %}">Горные</a>
-            <a class="dropdown-item" href="#">Шоссейные</a>
-            <a class="dropdown-item" href="#">BMX</a>
-            <a class="dropdown-item" href="#">Круизеры (городские)</a>
-            <a class="dropdown-item" href="#">Детские</a>
+            <a class="dropdown-item" href="{% url 'bike:roadbike' %}">Шоссейные</a>
+            <a class="dropdown-item" href="{% url 'bike:bmxbike' %}">BMX</a>
+            <a class="dropdown-item" href="{% url 'bike:citybike' %}">Круизеры (городские)</a>
+            <a class="dropdown-item" href="{% url 'bike:kidsbike' %}">Детские</a>
           </div>
         </div>
 
@@ -31,11 +31,8 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="#">Колеса</a>
             <a class="dropdown-item" href="#">Рамы</a>
-            <a class="dropdown-item" href="#">Рулевое Управление</a>
             <a class="dropdown-item" href="#">Трансмиссия</a>
             <a class="dropdown-item" href="#">Тормозная система</a>
-            <a class="dropdown-item" href="#">Седла</a>
-            <a class="dropdown-item" href="#">Педали</a>
           </div>
         </div>
 
@@ -47,10 +44,7 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="#">Веломайки</a>
-            <a class="dropdown-item" href="#">Велообувь</a>
             <a class="dropdown-item" href="#">Велошорты</a>
-            <a class="dropdown-item" href="#">Ветровки</a>
-            <a class="dropdown-item" href="#">Куртки</a>
             <a class="dropdown-item" href="#">Перчатки</a>
             <a class="dropdown-item" href="#">Очки</a>
           </div>
@@ -62,9 +56,6 @@
             Аксесуары
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" href="#">Велозамки</a>
-            <a class="dropdown-item" href="#">Звонки</a>
-            <a class="dropdown-item" href="#">Зеркала</a>
             <a class="dropdown-item" href="#">Инструмент</a>
             <a class="dropdown-item" href="#">Насосы</a>
             <a class="dropdown-item" href="#">Рюкзаки</a>
@@ -104,20 +95,13 @@
 </div>
 
 
-
-
-
 <div class="p-2 mb-0 bg-light text-white">
     <div class="row">
       <div class="col"></div>
-      <div class="col">
-          <p class="text-center"> <img width="50">  </p>
-      </div>
+      <div class="col">  <p class="text-center"> <img width="50">  </p>  </div>
       <div class="col"></div>
     </div>
 </div>
-
-
 
 
 <div class="p-2 mb-0 bg-light text-white">

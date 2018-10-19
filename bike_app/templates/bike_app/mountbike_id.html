@@ -6,7 +6,7 @@
 
 <div class="p-2 mb-0 bg-light text-white">
     <div class="row">
-      <div class="col"></div>
+      <div class="col-2"></div>
 
       <div class="col">
         <a href="{{ go_back }}"> 
@@ -16,7 +16,23 @@
 
       <div class="col"></div>
 
+   {% if type == 'bmx' or type == 'child_bike' or type == 'city_bike' %}
       {% if user.is_authenticated %}
+        {% if this_bike.mountbikes.available_no_size > 0 %}
+
+        <div class="col">
+            <form action= "{% url 'bike_app:bmxbike_model2' %}" method="post" >
+             {% csrf_token %}
+            <p class="text-center"> <button type="submit" class="btn btn-info mb-0" id="to_basket"> В Корзину </button> </p>
+            </a>
+        </div>
+
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+  {% if user.is_authenticated %}
+    {% if size_list|length > 0 %} 
       <div class="col">
         <form action= "{% url 'bike_app:mountbike_model' %}" method="post" >
           {% csrf_token %}
@@ -35,11 +51,11 @@
   
                           <div class="modal-body">
                             <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                              {% for size in size_list %}
+                        {% for size in size_list %}
                                 <label class="btn btn-secondary">
                                     <input type="radio" name="{{ size }}" id= "{{ size }}" value="{{ size }}" autocomplete="off"> {{ size }}
                                 </label>
-                              {% endfor %}
+                        {% endfor %}
                          </div>
                         
                         <div class="modal-footer">
@@ -51,7 +67,9 @@
                   </div>
           </form>
       </div>
-      {% else %}
+    {% endif %}
+  {% else %}
+    {% if size_list %} 
          <div class="col">
             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter">
               В КОРЗИНУ
@@ -78,9 +96,10 @@
               </div>
             </div>
         </div>
-      {% endif %}
+    {% endif %}
+  {% endif %}
 
-      <div class="col"></div>
+      <div class="col-2"></div>
     </div>
 </div>
 
@@ -89,12 +108,34 @@
     <div class="row">
       <div class="col"></div>
       <div class="col">
-        <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{img_link}}" class="img-fluid" alt="Responsive image" width="300"> 
+
+         {% if type == 'mountbike' %}
+             <img src="{% static 'bike_app/bike_models/mountbikes/'  %}{{this_bike.mountbikes.img_link}}" class="img-fluid" alt="Responsive image" width="300" >  
+         {% endif %}
+
+         {% if type == 'roadbike' %}
+             <img src="{% static 'bike_app/bike_models/roadbikes/'  %}{{this_bike.mountbikes.img_link}}" class="img-fluid" alt="Responsive image" width="300" >  
+         {% endif %} 
+
+         {% if type == 'bmx' %}
+            <img src="{% static 'bike_app/bike_models/BMX/'  %}{{this_bike.mountbikes.img_link}}" class="img-fluid" alt="Responsive image" width="300" >  
+         {% endif %}
+
+         {% if type == 'city_bike' %}
+            <img src="{% static 'bike_app/bike_models/Citybikes/'  %}{{this_bike.mountbikes.img_link}}" class="img-fluid" alt="Responsive image" width="300" >  
+         {% endif %} 
+
+         {% if type == 'child_bike' %}
+            <img src="{% static 'bike_app/bike_models/Kidsbikes/'  %}{{this_bike.mountbikes.img_link}}" class="img-fluid" alt="Responsive image" width="300" >  
+         {% endif %} 
+
       </div>
       <div class="col"> 
-        <p class="text-center"> <h2 class="text-dark"> {{ brand }} {{ name }} <p></p>  
-          цена: {{ price }} ₽<p></p> 
+        <p class="text-center"> <h2 class="text-dark">  {{ this_bike.mountbikes.name }} <p></p>  
+          цена: {{ this_bike.mountbikes.price }} ₽<p></p> 
+          {% if type == 'mountbike' or type == 'roadbike' %}
           <h4 class="text-dark"> доступные размеры: {{ size }}</h4> </h2> 
+          {% endif %}
         </p>
       </div>
       <div class="col"></div>
@@ -114,8 +155,7 @@
 <div class="p-2 mb-0 bg-light text-white">
     <div class="row">
       <div class="col"></div>
-      <div class="col-6">  <p class="text-center"> <p class="text-dark"> {{ description }} <p></p> 
-      </div>
+      <div class="col-6">  <p class="text-center"> <p class="text-dark"> {{ this_bike.description }} <p></p> </div>
       <div class="col"></div>
     </div>
 </div>
@@ -125,12 +165,8 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Брэнд: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ brand }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Брэнд: <p></p> </div>
+      <div class="col">  <p class="text-center"> <p class="text-dark"> {{ this_bike.mountbikes.brand }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
@@ -139,12 +175,8 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Модель: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ name }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Модель: <p></p> </div>
+      <div class="col">  <p class="text-center"> <p class="text-dark"> {{ this_bike.mountbikes.name }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
@@ -153,12 +185,8 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Год: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ year }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Год: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.mountbikes.year }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
@@ -167,12 +195,8 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Пол: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ sex }} <p></p> 
-      </div>
+      <div class="col"><p class="text-left"> <p class="text-dark"> Пол: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ sex }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
@@ -181,12 +205,8 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Рама: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ frame }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Рама: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.frame }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
@@ -195,12 +215,8 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Вилка: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ fork }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Вилка: <p></p>  </div>
+      <div class="col">  <p class="text-center"> <p class="text-dark"> {{ this_bike.fork }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
@@ -209,12 +225,8 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Система: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ crank }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Система: <p></p> </div>
+      <div class="col">  <p class="text-center"> <p class="text-dark"> {{ this_bike.crank }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
@@ -223,12 +235,8 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Колеса: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ wheels }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Педали: <p></p> </div>
+      <div class="col">  <p class="text-center"> <p class="text-dark"> {{ this_bike.pedal }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
@@ -237,12 +245,8 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Передний переключатель: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ front_shifter }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Передний переключатель: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.front_shifter }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
@@ -251,12 +255,80 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Задний переключатель: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ rear_shifter }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Задний переключатель: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.rear_shifter }} <p></p>  </div>
+       <div class="col"></div>
+    </div>
+</div>
+
+<div class="p-0 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Манетки: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.lever }} <p></p>  </div>
+       <div class="col"></div>
+    </div>
+</div>
+
+<div class="p-0 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Кассета: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.cassete }} <p></p>  </div>
+       <div class="col"></div>
+    </div>
+</div>
+
+<div class="p-0 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Цепь: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.chain }} <p></p>  </div>
+       <div class="col"></div>
+    </div>
+</div>
+
+<div class="p-0 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Обода: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.rims }} <p></p>  </div>
+       <div class="col"></div>
+    </div>
+</div>
+
+<div class="p-0 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Шины: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.tyres }} <p></p>  </div>
+       <div class="col"></div>
+    </div>
+</div>
+
+<div class="p-0 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Передняя втулка: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.front_hub }} <p></p>  </div>
+       <div class="col"></div>
+    </div>
+</div>
+
+<div class="p-0 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Задняя втулка: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.rear_hub }} <p></p>  </div>
+       <div class="col"></div>
+    </div>
+</div>
+
+<div class="p-0 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Передний тормоз: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.front_brake }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
@@ -265,12 +337,8 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Передний тормоз: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ front_brake }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Задний тормоз: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.rear_brake }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
@@ -279,68 +347,90 @@
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Задний тормоз: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ rear_brake }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Руль: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.handlebar }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
 
-
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Руль: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ handlebar }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Вынос: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.stem }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
 
-
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Седло: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ seat }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Грипсы: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.grips }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
 
-
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Гарантия на раму: <p></p> 
-      </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ warranty }} <p></p> 
-      </div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Рулевая колонка: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.headset }} <p></p> </div>
        <div class="col"></div>
     </div>
 </div>
 
+<div class="p-0 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Седло: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.saddle }} <p></p> </div><div class="col"></div>
+    </div>
+</div>
 
 <div class="p-0 mb-0 bg-light text-white">
     <div class="row">
       <div class="col-4"></div>
-      <div class="col">
-        <p class="text-left"> <p class="text-dark"> Цена: <p></p> 
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Подседельный штырь: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.seatpost }} <p></p> </div><div class="col"></div>
+    </div>
+</div>
+
+{% if this_bike.warranty == 1 %}
+  <div class="p-0 mb-0 bg-light text-white">
+      <div class="row">
+        <div class="col-4"></div>
+        <div class="col"><p class="text-left"> <p class="text-dark"> Гарантия на раму: <p></p> </div>
+        <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.warranty }} год <p></p> </div><div class="col"></div>
       </div>
-      <div class="col"> 
-        <p class="text-center"> <p class="text-dark"> {{ price }} ₽ <p></p> 
+  </div>
+{% endif %}
+
+{% if this_bike.warranty > 1 and this_bike.warranty < 5 %}
+  <div class="p-0 mb-0 bg-light text-white">
+      <div class="row">
+        <div class="col-4"></div>
+        <div class="col"><p class="text-left"> <p class="text-dark"> Гарантия на раму: <p></p> </div>
+        <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.warranty }} года <p></p> </div><div class="col"></div>
       </div>
+  </div>
+{% endif %}
+
+{% if this_bike.warranty >= 5 %}
+  <div class="p-0 mb-0 bg-light text-white">
+      <div class="row">
+        <div class="col-4"></div>
+        <div class="col"><p class="text-left"> <p class="text-dark"> Гарантия на раму: <p></p> </div>
+        <div class="col"> <p class="text-center"> <p class="text-dark"> {{ this_bike.warranty }} лет <p></p> </div><div class="col"></div>
+      </div>
+  </div>
+{% endif %}
+
+<div class="p-0 mb-0 bg-light text-white">
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col"> <p class="text-left"> <p class="text-dark"> Цена: <p></p> </div>
+      <div class="col"> <p class="text-center"> <p class="text-dark"> {{  this_bike.mountbikes.price }} ₽ <p></p> </div>
        <div class="col"></div>
     </div>
 </div>

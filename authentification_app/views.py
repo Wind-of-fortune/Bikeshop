@@ -2,9 +2,9 @@ import uuid
 
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
-from django.http.response import HttpResponse, JsonResponse
+from django.http.response import HttpResponse
 from django.contrib.auth.hashers import make_password
-from django.utils import timezone
+from django.core.mail import send_mail
 
 from authentification_app.auth_view_functions import *
 
@@ -164,10 +164,10 @@ def user_register(request):
                 'если вы у нас не регистрировались, '
                 'то просто игнорируйте это сообщение'.format(code_for_registration),
 
-                'BikeShop',
+                'Wind-of-fortune2@yandex.ru',
                 [email],
                 fail_silently=False,
-                    )
+            )
 
             User_Registration.username = username
             User_Registration.first_name = first_name
@@ -216,36 +216,53 @@ def user_register_part2(request):
 
 def user_active_orders(request):
     u = request.user
+    order_id = ''
     if u.is_authenticated:
         if u.is_active:
-            active_orders = []
-            for i in Order.objects.filter(username=u.username):
-                if i.is_active == True:
-                    active_orders.append(i)
-            active_orders.reverse()
-            for i in active_orders:
-                if i.order_item_size == 'watch item name column':
-                    a = i.order_item_name
-                    a = a.split(',')
-                    print(a)
-                    t = []
-                    d = []
-                    try:
-                        for o in a:
-                            k = o.split('*')
-                            t.append(k[0].strip())
-                            d.append(k[1])
-                    except Exception:
-                        pass
-                    t.pop(-1)
-                    print(dict(zip(t,d)))
-                    i.order_item_name = list(zip(t,d))
-                    i.order_item_size = d
+            try:
+                order_id = request.get_full_path()
+                print('ORDER _ID ---', order_id)
+                order_id = order_id.split('?')
+                order_id = int(order_id[-1])
+                print('ORDER _ID2 ---', order_id)
+            except Exception as e:
+                print('EXCEPTION ---', e)
 
-            data = {'username': u.username,
-                    'active_orders': active_orders
-                    }
-            return render(request, 'authentification_app/user_active_orders.html', data)
+            if type(order_id) == int :
+                order = Order.objects.get(id=order_id)
+                order.is_active = False
+                order.is_paid = True
+                order.date_delivered = timezone.now()
+                order.add_information = ' '
+                order.save()
+
+                active_orders = []
+                for i in Order.objects.filter(username=u.username):
+                    if i.is_active == True:
+                        active_orders.append(i)
+                active_orders.reverse()
+
+                change_orders_view(active_orders)
+
+                data = {'username': u.username,
+                        'active_orders': active_orders
+                        }
+                return render(request, 'authentification_app/user_active_orders.html', data)
+            else:
+
+                active_orders = []
+                for i in Order.objects.filter(username=u.username):
+                    if i.is_active == True:
+                        active_orders.append(i)
+                active_orders.reverse()
+
+                change_orders_view(active_orders)
+
+                data = {'username': u.username,
+                        'active_orders': active_orders
+                        }
+                return render(request, 'authentification_app/user_active_orders.html', data)
+    return HttpResponse('user_active_orders - error')
 
 
 def user_finished_orders(request):
@@ -257,30 +274,14 @@ def user_finished_orders(request):
                 if i.is_active == False:
                     finished_orders.append(i)
             finished_orders.reverse()
-            for i in finished_orders:
-                if i.order_item_size == 'watch item name column':
-                    a = i.order_item_name
-                    a = a.split(',')
-                    print(a)
-                    t = []
-                    d = []
-                    try:
-                        for o in a:
-                            k = o.split('*')
-                            t.append(k[0].strip())
-                            d.append(k[1])
-                    except Exception:
-                        pass
-                    t.pop(-1)
-                    print(dict(zip(t,d)))
-                    i.order_item_name = list(zip(t,d))
-                    i.order_item_size = d
+
+            change_orders_view(finished_orders)
 
             data = {'username': u.username,
                     'finished_orders': finished_orders
                     }
             return render(request, 'authentification_app/user_finished_orders.html', data)
-
+    return HttpResponse('user_finished_orders - error')
 
 
 

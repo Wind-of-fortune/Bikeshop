@@ -1,24 +1,40 @@
 
 from django.db import models
-from django.utils import timezone
 
 
-class MountBikes(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+class MountBikes(models.Model): # FOR MOUNTBIKES, ROADBIKES
+    name = models.CharField(max_length=200, unique=True)
     brand = models.CharField(max_length=50)
     year = models.PositiveSmallIntegerField()
     fake_price = models.PositiveIntegerField()
     discount = models.PositiveSmallIntegerField(default=0)
     price = models.PositiveIntegerField(default=fake_price)
-    img_link = models.CharField(max_length=150)
+    img_link = models.CharField(max_length=300)
 
-    mount_bike = ('mountain_bike', 'mountain_bike')
-    road_bike = ('road_bike', 'road_bike')
-    city_bike = ('city_bike', 'city_bike')
-    bmx_bike = ('BMX_bike', 'BMX_bike')
-    child_bike = ('child_bike', 'child_bike')
-    __all = dict([mount_bike, road_bike, city_bike, bmx_bike, child_bike])
-    bike_type = models.CharField(max_length=20, choices=__all.items())
+    mount_bike = ('mountbike', 'горные велосипеды')
+    road_bike = ('roadbike', 'шоссейные велосипеды')
+    bmx = ('bmx', 'BMX')
+    city_bike = ('city_bike', 'городские велосипеды')
+    child_bike = ('child_bike', 'детские велосипеды')
+    wheels = ('wheels', 'колеса')
+    frame = ('frame', 'рамы')
+    shifter = ('shifter', 'переключатели')
+    brake = ('brake', 'тормоза')
+    shirts = ('shirts', 'футболки')
+    shorts = ('shorts','шорты')
+    gloves = ('gloves','перчатки')
+    glases = ('glases', 'очки')
+    tool = ('tool', 'инструменты')
+    pump = ('pump', 'насосы')
+    backpack = ('backpack', 'рюкзаки')
+    lamp = ('lamp', 'фонари')
+    fruit = ('fruit', 'фрукты')
+    water = ('water', 'вода')
+    nutrition = ('nutrition', 'питание')
+    __all = dict([mount_bike, road_bike, bmx, city_bike, child_bike, wheels, frame, shifter, brake, shirts, shorts,
+                  gloves, glases, tool, pump, backpack, lamp, fruit, water, nutrition
+                  ])
+    bike_type = models.CharField(max_length=40, choices=__all.items())
 
     available_XS = models.PositiveSmallIntegerField(default=0)
     available_S = models.PositiveSmallIntegerField(default=0)
@@ -26,6 +42,9 @@ class MountBikes(models.Model):
     available_L = models.PositiveSmallIntegerField(default=0)
     available_XL = models.PositiveSmallIntegerField(default=0)
 
+    available_no_size = models.PositiveSmallIntegerField(default=0) # for items that doesn't have size
+
+    available_gramms = models.PositiveSmallIntegerField(default=0)
 
     def to_dict(self):
         return {'id': self.pk,
@@ -40,47 +59,50 @@ class MountBikes(models.Model):
                 'available_M': self.available_M,
                 'available_L': self.available_L,
                 'available_XL': self.available_XL,
-        }
+                'available_no_size': self.available_no_size,
+                'available_gramms': self.available_gramms,
+                }
 
     def __str__(self):
         return str(self.name)
 
-
-class MountBikesDescription(models.Model):
-
+class MountBikesDescription(models.Model): # FOR MOUNTBIKES, ROADBIKES
     mountbikes = models.OneToOneField(MountBikes, on_delete=models.CASCADE, related_name='bikefirst',
-                                to_field='name', primary_key=True)
+                                      to_field='name', primary_key=True)
 
-    description = models.CharField(max_length=3000)
-    unisex = models.BooleanField(default=True)
+    description = models.CharField(max_length=5000)
 
-    frame = models.CharField(max_length=200)
-    fork = models.CharField(max_length=200)
-    crank = models.CharField(max_length=200)
-    wheels = models.CharField(max_length=200)
-    front_shifter = models.CharField(max_length=200)
-    rear_shifter = models.CharField(max_length=200)
-    front_brake = models.CharField(max_length=200)
-    rear_brake = models.CharField(max_length=200)
-    handlebar = models.CharField(max_length=200)
-    seat = models.CharField(max_length=200)
+    frame = models.CharField(max_length=800)
+    fork = models.CharField(max_length=800)
+    ammort = models.CharField(max_length=800) # new
+    crank = models.CharField(max_length=800)
+    pedal = models.CharField(max_length=800)#new
+    front_shifter = models.CharField(max_length=800)
+    rear_shifter = models.CharField(max_length=800)
+    lever = models.CharField(max_length=800) #new
+    cassete = models.CharField(max_length=800)  # new
+    chain = models.CharField(max_length=800)  # new
+    rims = models.CharField(max_length=800) # new
+    tyres = models.CharField(max_length=800)  # new
+    front_hub = models.CharField(max_length=800)  # new
+    rear_hub = models.CharField(max_length=800)  # new
+    front_brake = models.CharField(max_length=800)
+    rear_brake = models.CharField(max_length=800)
+    handlebar = models.CharField(max_length=800)
+    stem = models.CharField(max_length=800)# new
+    grips = models.CharField(max_length=800)# new
+    headset = models.CharField(max_length=800)  # new
+    saddle = models.CharField(max_length=800)
+    seatpost = models.CharField(max_length=800)  # new
     warranty = models.PositiveSmallIntegerField(default=5)
-
-    def to_dict(self):
-        return {'description': self.description,
-                'sex': self.unisex,
-                'frame': self.frame,
-                'fork': self.fork,
-                'crank': self.crank,
-                'wheels': self.wheels,
-                'front_shifter': self.front_shifter,
-                'rear_shifter': self.rear_shifter,
-                'front_brake': self.front_brake,
-                'rear_brake': self.rear_brake,
-                'handlebar': self.handlebar,
-                'warranty': self.warranty,
-        }
-
+    unisex = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.mountbikes.name)
+
+
+
+
+
+
+
